@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/navigation/nav_graph.xml -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_register" />
+
+    <!-- Define acciones de navegación entre fragmentos -->
+    <action
+        android:id="@+id/action_home_to_register"
+        app:destination="@id/registerFragment" />
+</navigation>
