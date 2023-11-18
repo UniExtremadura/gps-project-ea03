@@ -69,19 +69,21 @@ class JoinActivity : AppCompatActivity() {
             } else {
                 lifecycleScope.launch {
                     val user = User(
-                        null,
                         etUsername.text.toString(),
                         etPassword.text.toString()
                     )
-
-                    val id = db?.userDao()?.insert(user)
-                    navigateBackWithResult(
-                        User(
-                            id,
-                            etUsername.text.toString(),
-                            etPassword.text.toString()
+                    if(db.userDao().findByName(user.name) != null) {
+                        notifyInvalidCredentials("Username already exists")
+                    }
+                    else {
+                        db.userDao().insert(user)
+                        navigateBackWithResult(
+                            User(
+                                etUsername.text.toString(),
+                                etPassword.text.toString()
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
