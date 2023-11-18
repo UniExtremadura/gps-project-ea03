@@ -101,21 +101,61 @@
             app:layout_constraintTop_toBottomOf="@id/tv_repassword" />
 
 
-    <Button
-        android:id="@+id/bt_register"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#F1BE12"
-        android:text="@string/tv_register"
-        android:textAllCaps="false"
-        android:textColor="#2A2929"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_login_title"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/tv_login_title"
-        app:layout_constraintTop_toBottomOf="@+id/et_repassword" />
+        <Button
+            android:id="@+id/bt_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:backgroundTint="#F1BE12"
+            android:text="@string/tv_register"
+            android:textAllCaps="false"
+            android:textColor="#2A2929"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_login_title"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_login_title"
+            app:layout_constraintTop_toBottomOf="@+id/et_repassword" />
 
+        <Switch
+            android:id="@+id/switch2"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="25dp"
+            app:layout_constraintBottom_toTopOf="@+id/bt_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.523"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_repassword"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="22dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/bt_register"
+            app:layout_constraintEnd_toStartOf="@+id/switch2"
+            app:layout_constraintHorizontal_bias="0.847"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_repassword"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/bt_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.21"
+            app:layout_constraintStart_toEndOf="@+id/switch2"
+            app:layout_constraintTop_toBottomOf="@+id/et_repassword"
+            app:layout_constraintVertical_bias="0.909" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
