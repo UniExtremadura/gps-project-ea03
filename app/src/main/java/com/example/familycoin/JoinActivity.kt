@@ -6,13 +6,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.familycoin.database.Database
 
 import com.example.familycoin.databinding.ActivityJoinBinding
 import com.example.familycoin.model.User
 import com.example.familycoin.utils.CredentialCheck
+import kotlinx.coroutines.launch
 
 class JoinActivity : AppCompatActivity() {
 
+    private lateinit var db: Database
     private lateinit var binding: ActivityJoinBinding
 
     companion object {
@@ -33,6 +37,8 @@ class JoinActivity : AppCompatActivity() {
         binding = ActivityJoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        db = Database.getInstance(applicationContext)!!
+
         //views initialization and listeners
         setUpUI()
         setUpListeners()
@@ -45,13 +51,38 @@ class JoinActivity : AppCompatActivity() {
     private fun setUpListeners() {
         with(binding) {
             btRegister.setOnClickListener {
-                val check = CredentialCheck.join(
-                    etUsername.text.toString(),
-                    etPassword.text.toString(),
-                    etRepassword.text.toString()
-                )
-                if (check.fail) notifyInvalidCredentials(check.msg)
-                else navigateBackWithResult(User(etUsername.text.toString(), etPassword.text.toString()))
+                join()
+            }
+        }
+    }
+
+    private fun join() {
+        with(binding) {
+            val check = CredentialCheck.join(
+                etUsername.text.toString(),
+                etPassword.text.toString(),
+                etRepassword.text.toString()
+            )
+
+            if (check.fail) {
+                notifyInvalidCredentials(check.msg)
+            } else {
+                lifecycleScope.launch {
+                    val user = User(
+                        null,
+                        etUsername.text.toString(),
+                        etPassword.text.toString()
+                    )
+
+                    val id = db?.userDao()?.insert(user)
+                    navigateBackWithResult(
+                        User(
+                            id,
+                            etUsername.text.toString(),
+                            etPassword.text.toString()
+                        )
+                    )
+                }
             }
         }
     }

@@ -6,14 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
+import com.example.familycoin.database.Database
 
 import com.example.familycoin.databinding.ActivityLoginBinding
 import com.example.familycoin.model.User
 import com.example.familycoin.utils.CredentialCheck
 import com.example.familycoin.home.HomeActivity
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var db: Database
     private lateinit var binding: ActivityLoginBinding
 
     private val responseLauncher =
@@ -44,6 +48,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        db = Database.getInstance(applicationContext)!!
+
         //views initialization and listeners
         setUpUI()
         setUpListeners()
@@ -57,15 +63,42 @@ class LoginActivity : AppCompatActivity() {
         with(binding) {
 
             btLogin.setOnClickListener {
-                val check = CredentialCheck.login(etUsername.text.toString(), etPassword.text.toString())
-
-                if (check.fail) notifyInvalidCredentials(check.msg)
-                else navigateToHomeActivity(User(etUsername.text.toString(), etPassword.text.toString()), check.msg)
+                checkLogin()
             }
 
             btRegister.setOnClickListener {
                 navigateToJoin()
             }
+        }
+    }
+
+    private fun checkLogin() {
+        val check = CredentialCheck.login(
+            binding.etUsername.text.toString(),
+            binding.etPassword.text.toString()
+        )
+
+        if (!check.fail) {
+            lifecycleScope.launch {
+                val user = db?.userDao()?.findByName(binding.etUsername.text.toString())
+
+                if (user != null) {
+                    val passwordCheck = CredentialCheck.passwordOk(
+                        binding.etPassword.text.toString(),
+                        user.password
+                    )
+
+                    if (check.fail) {
+                        notifyInvalidCredentials(check.msg)
+                    } else {
+                        navigateToHomeActivity(user, check.msg)
+                    }
+                } else {
+                    notifyInvalidCredentials("Invalid username")
+                }
+            }
+        } else {
+            notifyInvalidCredentials(check.msg)
         }
     }
 
