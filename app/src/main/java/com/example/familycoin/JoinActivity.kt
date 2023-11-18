@@ -68,9 +68,14 @@ class JoinActivity : AppCompatActivity() {
                 notifyInvalidCredentials(check.msg)
             } else {
                 lifecycleScope.launch {
+                    var typeSwitch = 0
+                    if (switch2.isChecked) typeSwitch = 1
+                    else typeSwitch = 2
                     val user = User(
                         etUsername.text.toString(),
-                        etPassword.text.toString()
+                        etPassword.text.toString(),
+                        typeSwitch,
+                        0
                     )
                     if(db.userDao().findByName(user.name) != null) {
                         notifyInvalidCredentials("Username already exists")
@@ -80,7 +85,9 @@ class JoinActivity : AppCompatActivity() {
                         navigateBackWithResult(
                             User(
                                 etUsername.text.toString(),
-                                etPassword.text.toString()
+                                etPassword.text.toString(),
+                                typeSwitch,
+                                0
                             )
                         )
                     }

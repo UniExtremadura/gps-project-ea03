@@ -8,5 +8,7 @@ import java.io.Serializable
 data class User(
     @PrimaryKey
     val name: String = "",
-    val password: String = ""
+    val password: String = "",
+    val type: Int = 0,
+    val familyCoinCode: Int = 0
 ) : Serializable
