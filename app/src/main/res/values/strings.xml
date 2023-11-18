@@ -1,5 +1,16 @@
 <resources>
-    <string name="app_name">FamilyCoin</string>
+    <string name="app_name">Tivi Clone</string>
+    <string name="user_string">user</string>
+    <string name="password_string">password</string>
+    <string name="tv_login">Iniciar Sesion</string>
+    <string name="valid_user_msg">Credentials valid!</string>
+    <string name="invalid_user_msg">Credentials no valid</string>
+    <string name="tv_register">Crear cuenta nueva</string>
+    <string name="repeat_password">repeat password</string>
+    <string name="greeting">Hello, %s!</string>
+    <string name="discover_option">Discover</string>
+    <string name="library_option">Library</string>
+    <string name="user_option">User</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

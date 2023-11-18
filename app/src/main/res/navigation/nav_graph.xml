@@ -4,21 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/LoginFragment">
 
     <fragment
-        android:id="@+id/homeFragment"
-
+        android:id="@+id/LoginFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/activity_login" />
 
     <fragment
-        android:id="@+id/registerFragment"
+        android:id="@+id/RegisterFragment"
         android:label="Register"
         tools:layout="@layout/fragment_register" />
 
     <!-- Define acciones de navegación entre fragmentos -->
     <action
-        android:id="@+id/action_home_to_register"
-        app:destination="@id/registerFragment" />
+        android:id="@+id/action_login_to_register"
+        app:destination="@id/RegisterFragment" />
 </navigation>
