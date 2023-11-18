@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="10dp"
     android:paddingVertical="100dp"
-    tools:context=".view.JoinActivity">
+    tools:context=".JoinActivity">
 
 
 
@@ -16,7 +16,7 @@
             android:layout_height="163dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/logo_clone"
+            android:src="@drawable/familycoinicon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.662"
             app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +106,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#8BC34A"
+        android:backgroundTint="#F1BE12"
         android:text="@string/tv_register"
         android:textAllCaps="false"
         android:textColor="#2A2929"

@@ -75,7 +75,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToJoin() {
-        JoinActivity.start(this, responseLauncher)
+        val intent = Intent(this, JoinActivity::class.java)
+        startActivity(intent)
     }
 
     private fun navigateToWebsite() {
