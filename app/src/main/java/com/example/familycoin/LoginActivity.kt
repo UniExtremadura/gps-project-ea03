@@ -88,10 +88,10 @@ class LoginActivity : AppCompatActivity() {
                         user.password
                     )
 
-                    if (check.fail) {
-                        notifyInvalidCredentials(check.msg)
+                    if (passwordCheck.fail) {
+                        notifyInvalidCredentials(passwordCheck.msg)
                     } else {
-                        navigateToHomeActivity(user, check.msg)
+                        navigateToHomeActivity(user, passwordCheck.msg)
                     }
                 } else {
                     notifyInvalidCredentials("Invalid username")

@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_discover"
+        android:id="@+id/action_tasks"
         android:enabled="true"
         android:icon="@drawable/baseline_task_24"
         android:title="@string/Tasks_option"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_library"
+        android:id="@+id/action_shop"
         android:enabled="true"
         android:icon="@drawable/baseline_add_shopping_cart_24"
         android:title="@string/Shop_option"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_user"
+        android:id="@+id/action_family"
         android:enabled="true"
         android:icon="@drawable/family_icon"
         android:title="@string/Family_option"
