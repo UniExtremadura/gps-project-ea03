@@ -4,19 +4,19 @@
     <item
         android:id="@+id/action_discover"
         android:enabled="true"
-        android:icon="@drawable/baseline_explore_24"
-        android:title="@string/discover_option"
+        android:icon="@drawable/baseline_task_24"
+        android:title="@string/Tasks_option"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_library"
         android:enabled="true"
-        android:icon="@drawable/baseline_video_library_24"
-        android:title="@string/library_option"
+        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:title="@string/Shop_option"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_user"
         android:enabled="true"
-        android:icon="@drawable/baseline_person_outline_24"
-        android:title="@string/user_option"
+        android:icon="@drawable/family_icon"
+        android:title="@string/Family_option"
         app:showAsAction="ifRoom" />
 </menu>
