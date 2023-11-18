@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.familycoin.R
 
 import com.example.familycoin.databinding.ActivityHomeBinding
@@ -48,29 +50,14 @@ class HomeActivity : AppCompatActivity() {
         familyFragment = FamilyFragment()
 
         //TODO set discoverFragment as default fragment
-        setCurrentFragment(tasksFragment)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
+        binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
 
     }
 
     fun setUpListeners() {
-        //TODO set listeners for bottom navigation bar
-        with(binding) {
-            bottomNavigation.setOnNavigationItemSelectedListener {
-                when (it.itemId) {
-                    R.id.action_tasks -> setCurrentFragment(tasksFragment)
-                    R.id.action_shop -> setCurrentFragment(shopFragment)
-                    R.id.action_family -> setCurrentFragment(familyFragment)
-                }
-                true
-            }
-        }
     }
-
-    private fun setCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container, fragment)
-            commit()
-        }
-
 
 }
