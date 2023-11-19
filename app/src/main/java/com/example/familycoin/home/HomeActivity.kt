@@ -86,6 +86,14 @@ class HomeActivity : AppCompatActivity() {
         Toast.makeText(this, "Settings option", Toast.LENGTH_SHORT).show()
             true
         }
+        R.id.action_logout -> {
+            Toast.makeText(this, "Logout option", Toast.LENGTH_SHORT).show()
+            true
+        }
+        R.id.action_profile -> {
+            Toast.makeText(this, "Profile option", Toast.LENGTH_SHORT).show()
+            true
+        }
         else -> {
         // The user's action isn't recognized.
         // Invoke the superclass to handle it.
