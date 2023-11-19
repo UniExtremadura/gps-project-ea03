@@ -9,19 +9,23 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.familycoin.R
+import com.example.familycoin.database.Database
 
 import com.example.familycoin.databinding.ActivityHomeBinding
 import com.example.familycoin.model.User
+import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var db: Database
 
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
@@ -46,9 +50,13 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val user = intent.getSerializableExtra(USER_INFO) as User
+        db = Database.getInstance(applicationContext)!!
 
-        setUpUI(user)
+        val user = intent.getSerializableExtra(USER_INFO) as User
+        lifecycleScope.launch {
+            val user1 = db.userDao().findByName(user.name) as User
+            setUpUI(user1)
+        }
         setUpListeners()
     }
 
@@ -67,7 +75,18 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-
+        binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.familyFragment -> {
+                        val destinationId = if (user.familyCoinId != null) R.id.familyFragment else R.id.noFamilyFragment
+                        navController.navigate(destinationId)
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -20,4 +20,10 @@
         android:name="com.example.familycoin.home.FamilyFragment"
         android:label="Familia"
         tools:layout="@layout/fragment_family" />
+
+    <fragment
+        android:id="@+id/noFamilyFragment"
+        android:name="com.example.familycoin.home.NoFamilyFragment"
+        android:label="Familia"
+        tools:layout="@layout/fragment_no_family" />
 </navigation>
