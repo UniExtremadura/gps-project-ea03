@@ -1,5 +1,6 @@
 package com.example.familycoin
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -91,6 +92,14 @@ class LoginActivity : AppCompatActivity() {
                     if (passwordCheck.fail) {
                         notifyInvalidCredentials(passwordCheck.msg)
                     } else {
+
+                        val sharedPreferences = getSharedPreferences("nombre_archivo", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.clear()
+
+                        editor.putString("username", user.name)
+                        editor.apply()
+
                         navigateToHomeActivity(user, passwordCheck.msg)
                     }
                 } else {

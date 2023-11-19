@@ -8,16 +8,16 @@
     <fragment
         android:id="@+id/tasksFragment"
         android:name="com.example.familycoin.home.TasksFragment"
-        android:label="fragment_tasks"
+        android:label="Tareas"
         tools:layout="@layout/fragment_tasks" />
     <fragment
         android:id="@+id/shopFragment"
         android:name="com.example.familycoin.home.ShopFragment"
-        android:label="fragment_shop"
+        android:label="Tienda"
         tools:layout="@layout/fragment_shop" />
     <fragment
         android:id="@+id/familyFragment"
         android:name="com.example.familycoin.home.FamilyFragment"
-        android:label="fragment_family"
+        android:label="Familia"
         tools:layout="@layout/fragment_family" />
 </navigation>

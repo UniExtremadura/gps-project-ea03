@@ -75,6 +75,7 @@ class JoinActivity : AppCompatActivity() {
                         etUsername.text.toString(),
                         etPassword.text.toString(),
                         typeSwitch,
+                        null,
                         0
                     )
                     if(db.userDao().findByName(user.name) != null) {
@@ -87,6 +88,7 @@ class JoinActivity : AppCompatActivity() {
                                 etUsername.text.toString(),
                                 etPassword.text.toString(),
                                 typeSwitch,
+                                null,
                                 0
                             )
                         )
