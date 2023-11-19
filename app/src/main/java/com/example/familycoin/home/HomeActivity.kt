@@ -78,7 +78,7 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.familyFragment -> {
-                        val destinationId = if (user.familyCoinId != null) R.id.familyFragment else R.id.noFamilyFragment
+                        val destinationId = if (user.familyCoinId == null) R.id.familyFragment else R.id.noFamilyFragment
                         navController.navigate(destinationId)
                     true
                 }
