@@ -3,11 +3,15 @@ package com.example.familycoin.database
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.familycoin.model.Family
+import com.example.familycoin.model.Task
 import com.example.familycoin.model.User
 
-@androidx.room.Database(entities = [User::class], version = 1)
+@androidx.room.Database(entities = [User::class, Family::class, Task::class], version = 1)
 abstract class Database : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun familyDao(): FamilyDao
+    abstract fun taskDao(): TaskDao
 
     companion object {
         private var INSTANCE: Database? = null
