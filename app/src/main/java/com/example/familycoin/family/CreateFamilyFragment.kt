@@ -2,7 +2,6 @@ package com.example.familycoin.family
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -65,7 +64,7 @@ class CreateFamilyFragment : Fragment() {
                     db.familyDao().insert(newFamily)
                     val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                     val valorString = sharedPref?.getString("username", "default")
-                    var userUpdate = db.userDao().findByName("admin")
+                    var userUpdate = db.userDao().findByName(valorString!!)
                     var newFamilyComplete = db.familyDao().findByName(textoEditText)
                     userUpdate.familyCoinId = newFamilyComplete?.familyCoinId
                     if (userUpdate != null) {

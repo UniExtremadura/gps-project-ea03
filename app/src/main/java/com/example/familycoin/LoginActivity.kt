@@ -93,7 +93,7 @@ class LoginActivity : AppCompatActivity() {
                         notifyInvalidCredentials(passwordCheck.msg)
                     } else {
 
-                        val sharedPreferences = getSharedPreferences("nombre_archivo", Context.MODE_PRIVATE)
+                        val sharedPreferences = getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
                         editor.clear()
 
