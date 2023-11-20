@@ -14,15 +14,15 @@
         android:layout_height="90dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="60dp"
-        android:id="@+id/taskItemImage"
+        android:id="@+id/gridItemImage"
         android:src="@drawable/ic_launcher_background">
     </ImageView>
         
         <TextView
-            android:id="@+id/taskItemName"
+            android:id="@+id/gridItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/taskItemImage"
+            android:layout_below="@+id/gridItemImage"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:gravity="center"

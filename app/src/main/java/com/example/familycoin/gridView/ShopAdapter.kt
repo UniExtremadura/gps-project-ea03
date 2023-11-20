@@ -9,13 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.familycoin.R
 
-class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : BaseAdapter() {
+class ShopAdapter(var context:Context, var shopList: ArrayList<ShopItem>) : BaseAdapter() {
     override fun getCount(): Int {
-        return taskList.size
+        return shopList.size
     }
 
     override fun getItem(position: Int): Any {
-        return taskList[position]
+        return shopList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -31,11 +31,11 @@ class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : Base
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.grid_item_list, parent, false)
         }
-        val taskItem = this.getItem(position) as TaskItem
-        val taskName = view!!.findViewById<TextView>(R.id.gridItemName)
-        val taskImage = view.findViewById<ImageView>(R.id.gridItemImage)
-        taskName.text = taskItem.name
-        taskImage.setImageResource(taskItem.image!!)
+        val shopItem = this.getItem(position) as ShopItem
+        val shopName = view!!.findViewById<TextView>(R.id.gridItemName)
+        val shopImage = view.findViewById<ImageView>(R.id.gridItemImage)
+        shopName.text = shopItem.name
+        shopImage.setImageResource(shopItem.image!!)
         return view
     }
 
