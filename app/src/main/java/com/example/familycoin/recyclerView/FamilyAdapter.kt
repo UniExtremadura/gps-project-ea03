@@ -17,7 +17,7 @@ class FamilyAdapter(private val familyList: List<FamilyItem>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: FamilyViewHolder, position: Int) {
         val familyItem = familyList[position]
 
-        holder.imageView.setImageResource(familyItem.imageRes)
+        holder.imageView.setImageResource(familyItem.imageRes!!)
         holder.textView.text = familyItem.name
     }
 

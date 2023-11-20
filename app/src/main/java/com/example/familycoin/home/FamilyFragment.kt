@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familycoin.R
+import com.example.familycoin.gridView.TaskItem
 import com.example.familycoin.recyclerView.FamilyItem
 
 class FamilyFragment : Fragment() {
@@ -33,7 +34,7 @@ class FamilyFragment : Fragment() {
     }
 
     private fun setDataList(): List<FamilyItem> {
-        val list = mutableListOf<FamilyItem>()
+        var list: ArrayList<FamilyItem> = ArrayList()
 
         list.add(FamilyItem("Miembro 1", R.drawable.baseline_person_outline_24))
         list.add(FamilyItem("Miembro 2", R.drawable.baseline_person_outline_24))
