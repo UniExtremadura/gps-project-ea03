@@ -22,6 +22,6 @@ data class User(
     val password: String = "",
     val type: Int = 0,
     @ColumnInfo(name = "familyCoinId", index = true, defaultValue = "NULL")
-    val familyCoinId: Long?,
+    var familyCoinId: Long?,
     val coins: Int = 0
 ) : Serializable

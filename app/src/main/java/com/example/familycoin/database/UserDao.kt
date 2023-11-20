@@ -25,7 +25,7 @@ interface UserDao {
     suspend fun getFamilyCoinId(name: String): Long
 
     @Update
-    suspend fun updateUserFamilyCoinId(user: User)
+    suspend fun update(user: User)
 
     @Insert
     suspend fun insert(user: User): Long
