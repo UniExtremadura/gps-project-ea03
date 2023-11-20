@@ -13,4 +13,7 @@ interface FamilyDao {
 
     @Insert
     suspend fun insert(family: Family): Long
+
+    @Query("SELECT * FROM family WHERE familyName LIKE :familyName LIMIT 1")
+    suspend fun findByName(familyName: String): Family
 }
