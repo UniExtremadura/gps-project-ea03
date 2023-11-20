@@ -63,30 +63,36 @@ class HomeActivity : AppCompatActivity() {
     fun setUpUI(user: User) {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
+        val navController = navHostFragment.navController
 
         binding.bottomNavigation.setupWithNavController(navController)
+
+
         appBarConfiguration = AppBarConfiguration(
                 setOf(
                     R.id.tasksFragment,
                     R.id.shopFragment,
-                    R.id.familyFragment )
+                    R.id.familyFragment)
         )
+
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.familyFragment -> {
-                        val destinationId = if (user.familyCoinId == null) R.id.familyFragment else R.id.noFamilyFragment
-                        navController.navigate(destinationId)
+                    val destinationId = if (user.familyCoinId != null) R.id.familyFragment else R.id.noFamilyFragment
+                    navController.navigate(destinationId)
                     true
                 }
                 else -> {
-                    false
+                    navController.navigate(item.itemId)
+                    true
                 }
+
             }
         }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

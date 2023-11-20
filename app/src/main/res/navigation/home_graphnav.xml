@@ -26,4 +26,17 @@
         android:name="com.example.familycoin.home.NoFamilyFragment"
         android:label="Familia"
         tools:layout="@layout/fragment_no_family" />
+
+    <fragment
+        android:id="@+id/joinFamilyFragment"
+        android:name="com.example.familycoin.family.JoinFamilyFragment"
+        android:label="Familia"
+        tools:layout="@layout/fragment_join_family" />
+
+    <fragment
+        android:id="@+id/createFamilyFragment"
+        android:name="com.example.familycoin.family.CreateFamilyFragment"
+        android:label="Familia"
+        tools:layout="@layout/fragment_create_family" />
+
 </navigation>

@@ -19,4 +19,5 @@
         android:icon="@drawable/family_icon"
         android:title="@string/Family_option"
         app:showAsAction="ifRoom" />
+
 </menu>
