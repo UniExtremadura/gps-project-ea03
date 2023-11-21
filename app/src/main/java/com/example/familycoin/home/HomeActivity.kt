@@ -11,16 +11,20 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.familycoin.LoginActivity
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
 
 import com.example.familycoin.databinding.ActivityHomeBinding
 import com.example.familycoin.model.User
 import kotlinx.coroutines.launch
+
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -112,7 +116,12 @@ class HomeActivity : AppCompatActivity() {
             true
         }
         R.id.action_logout -> {
-            Toast.makeText(this, "Logout option", Toast.LENGTH_SHORT).show()
+            val sharedPreferences = getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.clear()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+
             true
         }
         R.id.action_profile -> {
