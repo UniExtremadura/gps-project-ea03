@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,8 @@ class FamilyFragment : Fragment() {
     private lateinit var familyList: List<FamilyItem>
     private lateinit var binding: FragmentFamilyBinding
     private lateinit var db: Database
+    private lateinit var familyNameTextView: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,30 +42,34 @@ class FamilyFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_family, container, false)
 
         recyclerView = view.findViewById(R.id.recyclerView)
-        familyList = setDataList()
+        familyNameTextView = view.findViewById(R.id.textView)
 
-        adapter = FamilyAdapter(familyList)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+        lifecycleScope.launch {
+            setDataList()
+        }
 
         return view
     }
 
-    private fun setDataList(): List<FamilyItem> {
-        var listFamilyItem: ArrayList<FamilyItem> = ArrayList()
-        var listUser: ArrayList<User> = ArrayList()
+    private suspend fun setDataList() {
+        val listFamilyItem: ArrayList<FamilyItem> = ArrayList()
+        val listUser: ArrayList<User> = ArrayList()
 
-        lifecycleScope.launch {
-            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-            val valorString = sharedPref?.getString("username", "default")
-            var userUpdate = db.userDao().findByName(valorString!!)
-            listUser = db.userDao().findByFamilyCoinId(userUpdate.familyCoinId!!) as ArrayList<User>
-        }
+        val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+        val valorString = sharedPref?.getString("username", "default")
+        val userUpdate = db.userDao().findByName(valorString!!)
 
-        for(user in listUser){
+        val familyName = db.familyDao().findById(userUpdate.familyCoinId!!).familyName
+        familyNameTextView.text = familyName
+
+        val userList = db.userDao().findByFamilyCoinId(userUpdate.familyCoinId!!) as ArrayList<User>
+
+        for (user in userList) {
             listFamilyItem.add(FamilyItem(user.name, R.drawable.baseline_person_outline_24))
         }
 
-        return listFamilyItem
+        adapter = FamilyAdapter(listFamilyItem)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
     }
 }
