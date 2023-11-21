@@ -64,8 +64,9 @@ class NewTaskFragment : Fragment() {
                 if (user != null) {
                     if (user.familyCoinId != null){
                         val newTask = Task(taskName = nameEditText, description = descriptionEditText, reward = rewardEditText, familyCoinId = user.familyCoinId!!, assignedUserName = null)
-                        val task = db?.taskDao()?.insert(newTask)
+                        db?.taskDao()?.insert(newTask)
                     }
+                    HomeActivity.start(requireContext(), user)
                 }
 
             }

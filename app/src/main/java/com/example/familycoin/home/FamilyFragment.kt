@@ -23,8 +23,6 @@ class FamilyFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FamilyAdapter
-    private lateinit var familyList: List<FamilyItem>
-    private lateinit var binding: FragmentFamilyBinding
     private lateinit var db: Database
     private lateinit var familyNameTextView: TextView
     private lateinit var familyCodeTextView: TextView
@@ -55,7 +53,6 @@ class FamilyFragment : Fragment() {
 
     private suspend fun setDataList() {
         val listFamilyItem: ArrayList<FamilyItem> = ArrayList()
-        val listUser: ArrayList<User> = ArrayList()
 
         val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
         val valorString = sharedPref?.getString("username", "default")
@@ -64,7 +61,8 @@ class FamilyFragment : Fragment() {
         val familyName = db.familyDao().findById(userUpdate.familyCoinId!!).familyName
         val familyCode = db.familyDao().findById(userUpdate.familyCoinId!!).familyCoinId
         familyNameTextView.text = familyName
-        familyCodeTextView.text = familyCode.toString()
+        var string = "Family Code: "
+        familyCodeTextView.text = (string + familyCode.toString())
 
 
 

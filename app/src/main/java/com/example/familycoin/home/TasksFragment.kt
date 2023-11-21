@@ -1,5 +1,6 @@
 package com.example.familycoin.home
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,10 +9,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.gridView.TaskAdapter
 import com.example.familycoin.gridView.TaskItem
 import androidx.navigation.fragment.findNavController
+import com.example.familycoin.database.Database
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +35,7 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
     private lateinit var gridView: GridView
     private lateinit var taskList: ArrayList<TaskItem>
     private lateinit var adapter:TaskAdapter
+    private lateinit var db: Database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,21 +43,30 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        taskList = setDataList()
+        db = Database.getInstance(requireContext())!!
+
     }
 
-    private fun setDataList() : ArrayList<TaskItem>{
+    private suspend fun setDataList(){
         var arrayList: ArrayList<TaskItem> = ArrayList()
 
-        arrayList.add(TaskItem("Task 1", R.drawable.baseline_task_24))
-        arrayList.add(TaskItem("Task 2", R.drawable.baseline_task_24))
-        arrayList.add(TaskItem("Task 3", R.drawable.baseline_task_24))
-        arrayList.add(TaskItem("Task 4", R.drawable.baseline_task_24))
-        arrayList.add(TaskItem("Task 5", R.drawable.baseline_task_24))
-        arrayList.add(TaskItem("Task 6", R.drawable.baseline_task_24))
-        arrayList.add(TaskItem("Task 7", R.drawable.baseline_task_24))
+        val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+        val valorString = sharedPref?.getString("username", "default")
+        val taskUser = db.userDao().findByName(valorString.toString())
+        if (taskUser?.familyCoinId != null) {
+            val taskListUser = db.taskDao().findByFamilyCoinId(taskUser.familyCoinId!!)
 
-        return arrayList
+            if (taskListUser != null && taskListUser.isNotEmpty()) {
+                for (task in taskListUser) {
+                    arrayList.add(TaskItem(task.taskName, R.drawable.baseline_task_24))
+                }
+                adapter = TaskAdapter(requireContext(), arrayList)
+                gridView?.adapter = adapter
+                gridView?.onItemClickListener = this
+            }
+        }
+
+
     }
 
     override fun onCreateView(
@@ -62,14 +76,32 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_tasks, container, false)
         gridView = view.findViewById(R.id.gridView)
-        adapter = TaskAdapter(requireContext(), taskList)
-        gridView.adapter = adapter
-        gridView.onItemClickListener = this
+
+
+        lifecycleScope.launch {
+            setDataList()
+        }
+
+
 
         val btnNewTask = view.findViewById<View>(R.id.addTaskButton)
 
         btnNewTask.setOnClickListener {
-            findNavController().navigate(R.id.newTaskFragment)
+            lifecycleScope.launch {
+                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                val valorString = sharedPref?.getString("username", "default")
+                val user = db.userDao().findByName(valorString.toString())
+                if(user != null){
+                    if(user.type == 1){
+                        findNavController().navigate(R.id.newTaskFragment)
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "You are not allowed to create a task", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }
+
         }
 
         return view

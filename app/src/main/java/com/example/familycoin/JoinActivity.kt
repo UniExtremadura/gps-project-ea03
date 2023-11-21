@@ -69,8 +69,8 @@ class JoinActivity : AppCompatActivity() {
             } else {
                 lifecycleScope.launch {
                     var typeSwitch = 0
-                    if (switch2.isChecked) typeSwitch = 1
-                    else typeSwitch = 2
+                    if (switch2.isChecked) typeSwitch = 2
+                    else typeSwitch = 1
                     val user = User(
                         etUsername.text.toString(),
                         etPassword.text.toString(),
