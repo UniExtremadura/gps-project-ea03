@@ -1,21 +1,36 @@
 package com.example.familycoin.home
 import FamilyAdapter
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familycoin.R
+import com.example.familycoin.database.Database
+import com.example.familycoin.databinding.FragmentCreateFamilyBinding
+import com.example.familycoin.databinding.FragmentFamilyBinding
 import com.example.familycoin.gridView.TaskItem
+import com.example.familycoin.model.User
 import com.example.familycoin.recyclerView.FamilyItem
+import kotlinx.coroutines.launch
 
 class FamilyFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FamilyAdapter
     private lateinit var familyList: List<FamilyItem>
+    private lateinit var binding: FragmentFamilyBinding
+    private lateinit var db: Database
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        db = Database.getInstance(requireContext())!!
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,13 +49,20 @@ class FamilyFragment : Fragment() {
     }
 
     private fun setDataList(): List<FamilyItem> {
-        var list: ArrayList<FamilyItem> = ArrayList()
+        var listFamilyItem: ArrayList<FamilyItem> = ArrayList()
+        var listUser: ArrayList<User> = ArrayList()
 
-        list.add(FamilyItem("Miembro 1", R.drawable.baseline_person_outline_24))
-        list.add(FamilyItem("Miembro 2", R.drawable.baseline_person_outline_24))
-        list.add(FamilyItem("Miembro 3", R.drawable.baseline_person_outline_24))
-        // Añade más elementos según sea necesario
+        lifecycleScope.launch {
+            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+            val valorString = sharedPref?.getString("username", "default")
+            var userUpdate = db.userDao().findByName(valorString!!)
+            listUser = db.userDao().findByFamilyCoinId(userUpdate.familyCoinId!!) as ArrayList<User>
+        }
 
-        return list
+        for(user in listUser){
+            listFamilyItem.add(FamilyItem(user.name, R.drawable.baseline_person_outline_24))
+        }
+
+        return listFamilyItem
     }
 }
