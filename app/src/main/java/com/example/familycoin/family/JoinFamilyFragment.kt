@@ -1,11 +1,19 @@
 package com.example.familycoin.family
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
+import com.example.familycoin.database.Database
+import com.example.familycoin.databinding.FragmentCreateFamilyBinding
+import com.example.familycoin.databinding.FragmentJoinFamilyBinding
+import com.example.familycoin.home.HomeActivity
+import com.example.familycoin.model.Family
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +29,8 @@ class JoinFamilyFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var binding: FragmentJoinFamilyBinding
+    private lateinit var db: Database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,14 +38,37 @@ class JoinFamilyFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        db = Database.getInstance(requireContext())!!
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_join_family, container, false)
+        binding = FragmentJoinFamilyBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        val myButton = binding.btnJoinFamily
+
+        val editText = binding.joinFamilyName
+
+        myButton.setOnClickListener {
+            val textoEditText = editText.text.toString().toLong()
+            lifecycleScope.launch {
+                val family = db?.familyDao()?.findById(textoEditText)
+                if (family != null) {
+                    val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                    val valorString = sharedPref?.getString("username", "default")
+                    var userUpdate = db.userDao().findByName(valorString!!)
+                    userUpdate.familyCoinId = family?.familyCoinId
+                    if (userUpdate != null) {
+                        db.userDao().update(userUpdate)
+                    }
+                    HomeActivity.start(requireContext(), userUpdate)
+                }
+            }
+        }
+        return view
     }
 
     companion object {
