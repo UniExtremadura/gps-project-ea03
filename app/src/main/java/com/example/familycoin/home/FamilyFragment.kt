@@ -27,6 +27,7 @@ class FamilyFragment : Fragment() {
     private lateinit var binding: FragmentFamilyBinding
     private lateinit var db: Database
     private lateinit var familyNameTextView: TextView
+    private lateinit var familyCodeTextView: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,7 @@ class FamilyFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.recyclerView)
         familyNameTextView = view.findViewById(R.id.textView)
+        familyCodeTextView = view.findViewById(R.id.codeTextView)
 
         lifecycleScope.launch {
             setDataList()
@@ -60,7 +62,11 @@ class FamilyFragment : Fragment() {
         val userUpdate = db.userDao().findByName(valorString!!)
 
         val familyName = db.familyDao().findById(userUpdate.familyCoinId!!).familyName
+        val familyCode = db.familyDao().findById(userUpdate.familyCoinId!!).familyCoinId
         familyNameTextView.text = familyName
+        familyCodeTextView.text = familyCode.toString()
+
+
 
         val userList = db.userDao().findByFamilyCoinId(userUpdate.familyCoinId!!) as ArrayList<User>
 
