@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.Toast
 import com.example.familycoin.R
 import com.example.familycoin.gridView.TaskAdapter
 import com.example.familycoin.gridView.TaskItem
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,6 +65,13 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
         adapter = TaskAdapter(requireContext(), taskList)
         gridView.adapter = adapter
         gridView.onItemClickListener = this
+
+        val btnNewTask = view.findViewById<View>(R.id.addTaskButton)
+
+        btnNewTask.setOnClickListener {
+            findNavController().navigate(R.id.newTaskFragment)
+        }
+
         return view
     }
 

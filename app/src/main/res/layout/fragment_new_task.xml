@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="100dp"
+    tools:context=".home.NewTaskFragment">
+
+
+    <TextView
+        android:id="@+id/newTaskTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Task"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@+id/nameTaskTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.422"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.016" />
+
+    <TextView
+        android:id="@+id/nameTaskTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/nameTaskEditText"
+        app:layout_constraintStart_toStartOf="@+id/nameTaskEditText" />
+
+    <EditText
+        android:id="@+id/nameTaskEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionTaskEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/descriptionTaskTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionTaskEditText"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTaskEditText" />
+
+    <EditText
+        android:id="@+id/descriptionTaskEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Description"
+        app:layout_constraintBottom_toTopOf="@+id/rewardTaskEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/rewardTaskTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reward"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/rewardTaskEditText"
+        app:layout_constraintStart_toStartOf="@+id/rewardTaskEditText" />
+
+    <EditText
+        android:id="@+id/rewardTaskEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="76dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Reward"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddNewTask"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnAddNewTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add New Task"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,4 +39,10 @@
         android:label="Familia"
         tools:layout="@layout/fragment_create_family" />
 
+    <fragment
+        android:id="@+id/newTaskFragment"
+        android:name="com.example.familycoin.home.NewTaskFragment"
+        android:label="Nueva Tarea"
+        tools:layout="@layout/fragment_new_task" />
+
 </navigation>
