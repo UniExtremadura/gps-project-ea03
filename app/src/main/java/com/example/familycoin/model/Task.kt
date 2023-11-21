@@ -28,5 +28,7 @@ data class Task (
     @ColumnInfo(name = "assignedUserName", index = true, defaultValue = "NULL")
     val assignedUserName: String?,
     @ColumnInfo(name = "familyCoinId", index = true)
-    val familyCoinId: Long
+    val familyCoinId: Long,
+    val reward: Int = 0,
+    val description : String = ""
 ) : Serializable
