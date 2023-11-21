@@ -29,7 +29,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="120dp"
         android:layout_marginBottom="116dp"
-        android:text="Botón flotante"
+        android:text="Add Reward"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
