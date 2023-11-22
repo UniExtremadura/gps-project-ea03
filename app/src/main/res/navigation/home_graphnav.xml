@@ -9,7 +9,9 @@
         android:id="@+id/tasksFragment"
         android:name="com.example.familycoin.home.TasksFragment"
         android:label="Tareas"
-        tools:layout="@layout/fragment_tasks" />
+        tools:layout="@layout/fragment_tasks">
+    </fragment>
+
     <fragment
         android:id="@+id/shopFragment"
         android:name="com.example.familycoin.home.ShopFragment"
@@ -44,5 +46,11 @@
         android:name="com.example.familycoin.home.NewTaskFragment"
         android:label="Nueva Tarea"
         tools:layout="@layout/fragment_new_task" />
+    <fragment
+        android:id="@+id/taskItemDescriptionFragment"
+        android:name="com.example.familycoin.home.TaskItemDescriptionFragment"
+        android:label="fragment_task_item_description"
+        tools:layout="@layout/fragment_task_item_description" >
+    </fragment>
 
 </navigation>

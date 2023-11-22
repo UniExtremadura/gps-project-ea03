@@ -10,26 +10,27 @@
     <ImageView
         android:id="@+id/postItBackground"
         android:layout_width="580dp"
-        android:layout_height="540dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="48dp"
         android:scaleType="fitXY"
         android:src="@drawable/post_it"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/taskName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tarea 1"
-        android:textSize="25dp"
+        android:id="@+id/taskDescriptionText"
+        android:layout_width="264dp"
+        android:layout_height="200dp"
+        android:text="@string/LoreIpsum"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.151" />
+        app:layout_constraintTop_toBottomOf="@+id/taskName"
+        app:layout_constraintVertical_bias="0.18" />
 
     <TextView
         android:id="@+id/taskDescriptionTitle"
@@ -39,36 +40,10 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.247"
+        app:layout_constraintHorizontal_bias="0.24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskName"
-        app:layout_constraintVertical_bias="0.04" />
-
-    <TextView
-        android:id="@+id/taskDescriptionText"
-        android:layout_width="264dp"
-        android:layout_height="265dp"
-        android:text="@string/LoreIpsum"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskName"
-        app:layout_constraintVertical_bias="0.164" />
-
-    <TextView
-        android:id="@+id/taskValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="46dp"
-        android:textSize="30dp"
-        android:text="3000"
-        app:layout_constraintBottom_toTopOf="@+id/aceptTaskButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskDescriptionText" />
+        app:layout_constraintVertical_bias="0.039" />
 
     <Button
         android:id="@+id/aceptTaskButton"
@@ -77,9 +52,38 @@
         android:text="Accept Task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskDescriptionText"
-        app:layout_constraintVertical_bias="0.372" />
+        app:layout_constraintVertical_bias="0.437" />
+
+    <TextView
+        android:id="@+id/taskValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="46dp"
+        android:text="3000"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/aceptTaskButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDescriptionText"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/taskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tarea 1"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.195" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

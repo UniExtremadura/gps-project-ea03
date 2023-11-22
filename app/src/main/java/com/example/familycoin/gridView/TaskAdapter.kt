@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.navigation.Navigation
 import com.example.familycoin.R
 
 class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : BaseAdapter() {
@@ -36,6 +38,17 @@ class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : Base
         val taskImage = view.findViewById<ImageView>(R.id.gridItemImage)
         taskName.text = taskItem.name
         taskImage.setImageResource(taskItem.image!!)
+
+        view.setOnClickListener(){
+            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+            val editor = sharedPref?.edit()
+            editor?.putString("taskItem", taskItem.name)
+            editor?.apply()
+            
+
+            val navController = Navigation.findNavController(view)
+            navController.navigate(R.id.taskItemDescriptionFragment)
+        }
         return view
     }
 
