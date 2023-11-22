@@ -1,11 +1,16 @@
 package com.example.familycoin.home
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
+import com.example.familycoin.database.Database
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +26,10 @@ class TaskItemDescriptionFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var db: Database
+    private lateinit var taskDescription: TextView
+    private lateinit var taskPrice: TextView
+    private lateinit var taskName: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +43,27 @@ class TaskItemDescriptionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task_item_description, container, false)
+        val view = inflater.inflate(R.layout.fragment_task_item_description, container, false)
+        taskDescription = view.findViewById(R.id.taskDescriptionText)
+        taskPrice = view.findViewById(R.id.taskValue)
+        taskName = view.findViewById(R.id.taskName)
+
+        lifecycleScope.launch {
+            setDataList()
+        }
+
+        return view
+    }
+
+    private suspend fun setDataList() {
+val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+        val valorString = sharedPref?.getString("taskItem", "default")
+        val taskDetailed = db.taskDao().findByName(valorString!!)
+
+        this.taskName.text = taskDetailed.taskName
+        this.taskDescription.text = taskDetailed.description
+        this.taskPrice.text = taskDetailed.reward.toString()
+
     }
 
     companion object {
