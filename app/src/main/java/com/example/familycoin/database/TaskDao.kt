@@ -12,6 +12,9 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE taskId LIKE :taskId LIMIT 1")
     suspend fun findById(taskId: Long): Task
 
+    @Query("SELECT * FROM task WHERE taskName LIKE :taskName LIMIT 1")
+    suspend fun findByName(taskName: String): Task
+
     @Query("SELECT * FROM task WHERE familyCoinId LIKE :familyCoinId")
     suspend fun findByFamilyCoinId(familyCoinId: Long): List<Task>
 
