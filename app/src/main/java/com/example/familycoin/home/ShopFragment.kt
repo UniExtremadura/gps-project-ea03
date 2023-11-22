@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.familycoin.R
 import com.example.familycoin.gridView.ShopAdapter
 import com.example.familycoin.gridView.ShopItem
@@ -62,7 +63,14 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
         gridView = view.findViewById(R.id.gridView)
         adapter = ShopAdapter(requireContext(), shopList)
         gridView.adapter = adapter
-        gridView.onItemClickListener = this
+
+        val btnNewReward = view.findViewById<View>(R.id.btnAddReward)
+
+        btnNewReward.setOnClickListener {
+            findNavController().navigate(R.id.newRewardFragment)
+        }
+
+
         return view
     }
 
