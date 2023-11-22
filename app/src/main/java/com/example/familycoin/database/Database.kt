@@ -13,6 +13,8 @@ abstract class Database : RoomDatabase() {
     abstract fun familyDao(): FamilyDao
     abstract fun taskDao(): TaskDao
 
+    abstract fun rewardDao(): RewardDao
+
     companion object {
         private var INSTANCE: Database? = null
         fun getInstance(context: Context): Database? {
