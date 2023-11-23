@@ -8,10 +8,14 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.familycoin.R
+import com.example.familycoin.database.Database
+import kotlinx.coroutines.launch
 
 class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : BaseAdapter() {
+
     override fun getCount(): Int {
         return taskList.size
     }
@@ -29,6 +33,7 @@ class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : Base
         convertView: View?,
         parent: ViewGroup?
     ): View {
+
         var view = convertView
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.grid_item_list, parent, false)
@@ -36,9 +41,13 @@ class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : Base
         val taskItem = this.getItem(position) as TaskItem
         val taskName = view!!.findViewById<TextView>(R.id.gridItemName)
         val taskImage = view.findViewById<ImageView>(R.id.gridItemImage)
+        val assignedTask = view.findViewById<TextView>(R.id.assignedTask)
 
         taskName.text = taskItem.name
         taskImage.setImageResource(taskItem.image!!)
+        if(taskItem.assigned){
+            assignedTask.text = ("Already Assigned")
+        }
 
         view.setOnClickListener(){
             val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)

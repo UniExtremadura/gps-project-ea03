@@ -25,7 +25,7 @@ import java.io.Serializable
 data class Task (
     @PrimaryKey(autoGenerate = true) val taskId: Long = 0,
     val taskName: String,
-    @ColumnInfo(name = "assignedUserName", index = true, defaultValue = "NULL")
+    @ColumnInfo(name = "assignedUserName", index = true)
     var assignedUserName: String?,
     @ColumnInfo(name = "familyCoinId", index = true)
     val familyCoinId: Long,

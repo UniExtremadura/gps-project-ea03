@@ -57,8 +57,14 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
             val taskListUser = db.taskDao().findByFamilyCoinId(taskUser.familyCoinId!!)
 
             if (taskListUser != null && taskListUser.isNotEmpty()) {
+                var assigned = false
                 for (task in taskListUser) {
-                    arrayList.add(TaskItem(task.taskName, R.drawable.baseline_task_24))
+                    assigned = false
+                    if(task.assignedUserName != null){
+                        assigned = true
+                    }
+
+                    arrayList.add(TaskItem(task.taskName, R.drawable.baseline_task_24, assigned))
                 }
                 adapter = TaskAdapter(requireContext(), arrayList)
                 gridView?.adapter = adapter
