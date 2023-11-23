@@ -1,3 +1,5 @@
+package com.example.familycoin.recyclerView
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -5,7 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familycoin.R
-import com.example.familycoin.recyclerView.FamilyItem
+
+
+interface OnItemClickListener {
+    fun onItemClick(position: Int)
+}
 
 class FamilyAdapter(private val familyList: List<FamilyItem>) : RecyclerView.Adapter<FamilyAdapter.FamilyViewHolder>() {
 
@@ -19,6 +25,7 @@ class FamilyAdapter(private val familyList: List<FamilyItem>) : RecyclerView.Ada
 
         holder.imageView.setImageResource(familyItem.imageRes!!)
         holder.textView.text = familyItem.name
+
     }
 
     override fun getItemCount(): Int {

@@ -1,5 +1,5 @@
 package com.example.familycoin.home
-import FamilyAdapter
+import com.example.familycoin.recyclerView.FamilyAdapter
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,14 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
-import com.example.familycoin.databinding.FragmentCreateFamilyBinding
-import com.example.familycoin.databinding.FragmentFamilyBinding
-import com.example.familycoin.gridView.TaskItem
 import com.example.familycoin.model.User
 import com.example.familycoin.recyclerView.FamilyItem
 import kotlinx.coroutines.launch
 
-class FamilyFragment : Fragment() {
+class FamilyFragment : Fragment(){
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FamilyAdapter
@@ -50,6 +47,7 @@ class FamilyFragment : Fragment() {
 
         return view
     }
+
 
     private suspend fun setDataList() {
         val listFamilyItem: ArrayList<FamilyItem> = ArrayList()

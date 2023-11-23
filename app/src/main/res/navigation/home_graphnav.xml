@@ -59,4 +59,10 @@
         android:label="Nueva Recompensa"
         tools:layout="@layout/fragment_new_reward" />
 
+    <fragment
+        android:id="@+id/userTasksFragment"
+        android:name="com.example.familycoin.home.UserTasksFragment"
+        android:label="Tareas"
+        tools:layout="@layout/fragment_user_tasks" />
+
 </navigation>
