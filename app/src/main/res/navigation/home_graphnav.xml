@@ -21,7 +21,11 @@
         android:id="@+id/familyFragment"
         android:name="com.example.familycoin.home.FamilyFragment"
         android:label="Familia"
-        tools:layout="@layout/fragment_family" />
+        tools:layout="@layout/fragment_family" >
+        <action
+            android:id="@+id/action_familyFragment_to_userTasksFragment"
+            app:destination="@id/userTasksFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/noFamilyFragment"

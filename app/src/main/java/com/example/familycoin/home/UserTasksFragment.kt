@@ -52,10 +52,10 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
         var arrayList: ArrayList<UserTaskItem> = ArrayList()
 
         val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-        val valorString = sharedPref?.getString("username", "default")
+        val valorString = sharedPref?.getString("assignedUserName", "default")
         val taskUser = db.userDao().findByName(valorString.toString())
         if (taskUser?.familyCoinId != null) {
-            val taskListUser = db.taskDao().findByFamilyCoinId(taskUser.familyCoinId!!)
+            val taskListUser = db.taskDao().findByUsername(valorString!!)
 
             if (taskListUser != null && taskListUser.isNotEmpty()) {
                 for (task in taskListUser) {

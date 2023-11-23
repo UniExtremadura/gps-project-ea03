@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familycoin.R
@@ -17,6 +19,8 @@ import com.example.familycoin.recyclerView.FamilyItem
 import kotlinx.coroutines.launch
 
 class FamilyFragment : Fragment(){
+
+
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FamilyAdapter
@@ -40,6 +44,9 @@ class FamilyFragment : Fragment(){
         recyclerView = view.findViewById(R.id.recyclerView)
         familyNameTextView = view.findViewById(R.id.textView)
         familyCodeTextView = view.findViewById(R.id.codeTextView)
+        view.setOnClickListener(){
+            Toast.makeText(context,"Has clickado aqui", Toast.LENGTH_SHORT)
+        }
 
         lifecycleScope.launch {
             setDataList()
@@ -70,7 +77,8 @@ class FamilyFragment : Fragment(){
             listFamilyItem.add(FamilyItem(user.name, R.drawable.baseline_person_outline_24))
         }
 
-        adapter = FamilyAdapter(listFamilyItem)
+        var navController = Navigation.findNavController(requireView())
+        adapter = FamilyAdapter(this.requireContext(),listFamilyItem, navController)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
     }

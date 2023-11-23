@@ -18,6 +18,7 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE familyCoinId LIKE :familyCoinId")
     suspend fun findByFamilyCoinId(familyCoinId: Long): List<User>
 
+
     @Query("SELECT coins FROM user WHERE name LIKE :name LIMIT 1")
     suspend fun getCoins(name: String): Int
 
