@@ -56,7 +56,10 @@ class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : Base
             editor?.apply()
 
             val navController = Navigation.findNavController(view)
-            navController.navigate(R.id.taskItemDescriptionFragment)
+            if(taskItem.assigned) {
+                Toast.makeText(context, "Task already assigned", Toast.LENGTH_SHORT).show()
+            }
+            else navController.navigate(R.id.taskItemDescriptionFragment)
         }
         return view
     }
