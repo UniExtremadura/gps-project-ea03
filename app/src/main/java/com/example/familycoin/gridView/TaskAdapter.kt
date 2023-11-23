@@ -36,6 +36,7 @@ class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : Base
         val taskItem = this.getItem(position) as TaskItem
         val taskName = view!!.findViewById<TextView>(R.id.gridItemName)
         val taskImage = view.findViewById<ImageView>(R.id.gridItemImage)
+
         taskName.text = taskItem.name
         taskImage.setImageResource(taskItem.image!!)
 
@@ -44,7 +45,6 @@ class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : Base
             val editor = sharedPref?.edit()
             editor?.putString("taskItem", taskItem.name)
             editor?.apply()
-            
 
             val navController = Navigation.findNavController(view)
             navController.navigate(R.id.taskItemDescriptionFragment)

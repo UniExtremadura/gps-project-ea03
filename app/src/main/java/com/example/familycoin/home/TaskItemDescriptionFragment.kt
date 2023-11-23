@@ -37,6 +37,7 @@ class TaskItemDescriptionFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        db = Database.getInstance(requireContext())!!
     }
 
     override fun onCreateView(
