@@ -26,7 +26,7 @@ data class Task (
     @PrimaryKey(autoGenerate = true) val taskId: Long = 0,
     val taskName: String,
     @ColumnInfo(name = "assignedUserName", index = true, defaultValue = "NULL")
-    val assignedUserName: String?,
+    var assignedUserName: String?,
     @ColumnInfo(name = "familyCoinId", index = true)
     val familyCoinId: Long,
     val reward: Int = 0,

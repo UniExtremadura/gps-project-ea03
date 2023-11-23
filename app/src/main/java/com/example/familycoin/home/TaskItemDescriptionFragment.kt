@@ -51,6 +51,17 @@ class TaskItemDescriptionFragment : Fragment() {
         lifecycleScope.launch {
             setDataList()
         }
+        val myButton = view.findViewById<TextView>(R.id.acceptTaskButton)
+
+        myButton.setOnClickListener{
+            lifecycleScope.launch {
+                val task = db.taskDao().findByName(taskName.text.toString())
+                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                val username = sharedPref?.getString("username", "default")
+                task.assignedUserName = username
+                db.taskDao().updateAssignedUser(task)
+            }
+        }
 
         return view
     }
