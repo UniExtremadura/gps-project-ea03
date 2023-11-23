@@ -61,6 +61,8 @@ class TaskItemDescriptionFragment : Fragment() {
                 val username = sharedPref?.getString("username", "default")
                 task.assignedUserName = username
                 db.taskDao().updateAssignedUser(task)
+                val user = db.userDao().findByName(username!!)
+                HomeActivity.start(requireContext(), user)
             }
         }
 
