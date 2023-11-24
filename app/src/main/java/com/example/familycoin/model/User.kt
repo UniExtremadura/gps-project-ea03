@@ -23,5 +23,5 @@ data class User(
     val type: Int = 0,
     @ColumnInfo(name = "familyCoinId", index = true, defaultValue = "NULL")
     var familyCoinId: Long?,
-    val coins: Int = 0
+    var coins: Int = 0
 ) : Serializable

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -59,6 +60,8 @@ class HomeActivity : AppCompatActivity() {
         val user = intent.getSerializableExtra(USER_INFO) as User
         lifecycleScope.launch {
             val user1 = db.userDao().findByName(user.name) as User
+            val miTextView = findViewById<TextView>(R.id.coins)
+            miTextView.text = user1.coins.toString()
             setUpUI(user1)
         }
         setUpListeners()
