@@ -62,7 +62,10 @@ class UserConfirmRewardItemDescriptionFragment : Fragment() {
                 val user = db.userDao().findByName(username!!)
                 user.coins += task.reward
                 db.userDao().update(user)
-                HomeActivity.start(requireContext(), user)
+                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                val valorString = sharedPref?.getString("username", "default")
+                val user2 = db.userDao().findByName(valorString!!)
+                HomeActivity.start(requireContext(), user2)
             }
         }
 
