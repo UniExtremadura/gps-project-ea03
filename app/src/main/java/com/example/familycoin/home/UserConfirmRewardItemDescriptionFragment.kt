@@ -53,19 +53,20 @@ class UserConfirmRewardItemDescriptionFragment : Fragment() {
             setDataList()
         }
         val myButton = view.findViewById<TextView>(R.id.confirmTaskRewardButton)
-/*
+
         myButton.setOnClickListener{
             lifecycleScope.launch {
                 val task = db.taskDao().findByName(taskName.text.toString())
+                db.taskDao().delete(task)
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val username = sharedPref?.getString("username", "default")
-                task.assignedUserName = username
-                db.taskDao().updateAssignedUser(task)
                 val user = db.userDao().findByName(username!!)
+                user.coins += task.reward
+                db.userDao().update(user)
                 HomeActivity.start(requireContext(), user)
             }
         }
-*/
+
         return view
     }
 
