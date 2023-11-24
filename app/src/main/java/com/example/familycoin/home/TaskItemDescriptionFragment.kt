@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -59,10 +60,15 @@ class TaskItemDescriptionFragment : Fragment() {
                 val task = db.taskDao().findByName(taskName.text.toString())
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val username = sharedPref?.getString("username", "default")
-                task.assignedUserName = username
-                db.taskDao().updateAssignedUser(task)
                 val user = db.userDao().findByName(username!!)
-                HomeActivity.start(requireContext(), user)
+                if(user.type == 2) {
+                    task.assignedUserName = username
+                    db.taskDao().updateAssignedUser(task)
+                    HomeActivity.start(requireContext(), user)
+                }
+                else{
+                    Toast.makeText(requireContext(), "Only children can accept tasks", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
