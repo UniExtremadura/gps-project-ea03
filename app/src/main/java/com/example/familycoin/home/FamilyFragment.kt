@@ -44,10 +44,6 @@ class FamilyFragment : Fragment(){
         recyclerView = view.findViewById(R.id.recyclerView)
         familyNameTextView = view.findViewById(R.id.textView)
         familyCodeTextView = view.findViewById(R.id.codeTextView)
-        view.setOnClickListener(){
-            Toast.makeText(context,"Has clickado aqui", Toast.LENGTH_SHORT)
-        }
-
         lifecycleScope.launch {
             setDataList()
         }
@@ -74,7 +70,7 @@ class FamilyFragment : Fragment(){
         val userList = db.userDao().findByFamilyCoinId(userUpdate.familyCoinId!!) as ArrayList<User>
 
         for (user in userList) {
-            listFamilyItem.add(FamilyItem(user.name, R.drawable.baseline_person_outline_24))
+            listFamilyItem.add(FamilyItem(user.name, R.drawable.baseline_person_outline_24, user.type))
         }
 
         var navController = Navigation.findNavController(requireView())

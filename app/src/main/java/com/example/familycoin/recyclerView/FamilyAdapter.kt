@@ -39,13 +39,17 @@ class FamilyAdapter(var context: Context, private val familyList: List<FamilyIte
         holder.textView.text = familyItem.name
 
         holder.itemView.setOnClickListener {
+            if(familyItem.type == 2) {
+                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                val editor = sharedPref?.edit()
+                editor?.putString("assignedUserName", familyItem.name)
+                editor?.apply()
 
-            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-            val editor = sharedPref?.edit()
-            editor?.putString("assignedUserName",familyItem.name)
-            editor?.apply()
-
-            navController.navigate(R.id.userTasksFragment)
+                navController.navigate(R.id.userTasksFragment)
+            }
+            else{
+                Toast.makeText(context, "You can only select a child", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
