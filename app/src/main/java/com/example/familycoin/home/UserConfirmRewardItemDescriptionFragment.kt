@@ -57,9 +57,8 @@ class UserConfirmRewardItemDescriptionFragment : Fragment() {
         myButton.setOnClickListener{
             lifecycleScope.launch {
                 val task = db.taskDao().findByName(taskName.text.toString())
+                val username = task.assignedUserName
                 db.taskDao().delete(task)
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val username = sharedPref?.getString("username", "default")
                 val user = db.userDao().findByName(username!!)
                 user.coins += task.reward
                 db.userDao().update(user)
