@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -61,7 +62,8 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
                 for (task in taskListUser) {
                     arrayList.add(UserTaskItem(task.taskName, R.drawable.baseline_task_24))
                 }
-                adapter = UserTaskAdapter(requireContext(), arrayList)
+                val navController = Navigation.findNavController(requireView())
+                adapter = UserTaskAdapter(requireContext(), arrayList, navController)
                 gridView?.adapter = adapter
                 gridView?.onItemClickListener = this
             }

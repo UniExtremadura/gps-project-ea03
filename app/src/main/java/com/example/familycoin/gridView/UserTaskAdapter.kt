@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import kotlinx.coroutines.launch
 
-class UserTaskAdapter(var context:Context, var taskList: ArrayList<UserTaskItem>) : BaseAdapter() {
+class UserTaskAdapter(var context:Context, var taskList: ArrayList<UserTaskItem>, private val navController: NavController) : BaseAdapter() {
 
     override fun getCount(): Int {
         return taskList.size
@@ -36,7 +38,7 @@ class UserTaskAdapter(var context:Context, var taskList: ArrayList<UserTaskItem>
 
         var view = convertView
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.grid_item_list, parent, false)
+            view = LayoutInflater.from(context).inflate(R.layout.grid_user_task_item, parent, false)
         }
         val taskItem = this.getItem(position) as UserTaskItem
         val taskName = view!!.findViewById<TextView>(R.id.gridItemName)
@@ -47,7 +49,13 @@ class UserTaskAdapter(var context:Context, var taskList: ArrayList<UserTaskItem>
 
 
         view.setOnClickListener(){
+            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+            val editor = sharedPref?.edit()
+            editor?.putString("confirmTask", taskItem.name)
+            editor?.apply()
 
+
+            navController.navigate(R.id.userConfirmRewardItemDescriptionFragment)
         }
         return view
     }

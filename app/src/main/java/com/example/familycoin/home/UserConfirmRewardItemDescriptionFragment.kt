@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -23,7 +22,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [TaskItemDescriptionFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TaskItemDescriptionFragment : Fragment() {
+class UserConfirmRewardItemDescriptionFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -45,7 +44,7 @@ class TaskItemDescriptionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_task_item_description, container, false)
+        val view = inflater.inflate(R.layout.fragment_user_confirm_reward_item_description, container, false)
         taskDescription = view.findViewById(R.id.taskDescriptionText)
         taskPrice = view.findViewById(R.id.taskValue)
         taskName = view.findViewById(R.id.taskName)
@@ -53,31 +52,26 @@ class TaskItemDescriptionFragment : Fragment() {
         lifecycleScope.launch {
             setDataList()
         }
-        val myButton = view.findViewById<TextView>(R.id.acceptTaskButton)
-
+        val myButton = view.findViewById<TextView>(R.id.confirmTaskRewardButton)
+/*
         myButton.setOnClickListener{
             lifecycleScope.launch {
                 val task = db.taskDao().findByName(taskName.text.toString())
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val username = sharedPref?.getString("username", "default")
+                task.assignedUserName = username
+                db.taskDao().updateAssignedUser(task)
                 val user = db.userDao().findByName(username!!)
-                if(user.type == 2) {
-                    task.assignedUserName = username
-                    db.taskDao().updateAssignedUser(task)
-                    HomeActivity.start(requireContext(), user)
-                }
-                else{
-                    Toast.makeText(requireContext(), "Only children can accept tasks", Toast.LENGTH_SHORT).show()
-                }
+                HomeActivity.start(requireContext(), user)
             }
         }
-
+*/
         return view
     }
 
     private suspend fun setDataList() {
         val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-        val valorString = sharedPref?.getString("taskItem", "default")
+        val valorString = sharedPref?.getString("confirmTask", "default")
         val taskDetailed = db.taskDao().findByName(valorString!!)
 
         this.taskName.text = taskDetailed.taskName
@@ -98,7 +92,7 @@ class TaskItemDescriptionFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            TaskItemDescriptionFragment().apply {
+            UserConfirmRewardItemDescriptionFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

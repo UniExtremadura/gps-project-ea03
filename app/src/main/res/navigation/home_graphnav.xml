@@ -68,5 +68,10 @@
         android:name="com.example.familycoin.home.UserTasksFragment"
         android:label="Tareas"
         tools:layout="@layout/fragment_user_tasks" />
+    <fragment
+        android:id="@+id/userConfirmRewardItemDescriptionFragment"
+        android:name="com.example.familycoin.home.UserConfirmRewardItemDescriptionFragment"
+        android:label="fragment_user_confirm_reward_item_description"
+        tools:layout="@layout/fragment_user_confirm_reward_item_description" />
 
 </navigation>
