@@ -65,7 +65,7 @@ class JoinFamilyFragment : Fragment() {
                     HomeActivity.start(requireContext(), userUpdate)
                 }
                 else{
-                    Toast.makeText(requireContext(), "The family does not exists", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "The family does not exist", Toast.LENGTH_SHORT).show()
                 }
             }
         }

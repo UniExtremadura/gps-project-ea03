@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -55,17 +56,23 @@ class UserConfirmRewardItemDescriptionFragment : Fragment() {
         val myButton = view.findViewById<TextView>(R.id.confirmTaskRewardButton)
 
         myButton.setOnClickListener{
+
             lifecycleScope.launch {
-                val task = db.taskDao().findByName(taskName.text.toString())
-                val username = task.assignedUserName
-                db.taskDao().delete(task)
-                val user = db.userDao().findByName(username!!)
-                user.coins += task.reward
-                db.userDao().update(user)
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val valorString = sharedPref?.getString("username", "default")
                 val user2 = db.userDao().findByName(valorString!!)
-                HomeActivity.start(requireContext(), user2)
+                if (user2.type == 1) {
+                    val task = db.taskDao().findByName(taskName.text.toString())
+                    val username = task.assignedUserName
+                    db.taskDao().delete(task)
+                    val user = db.userDao().findByName(username!!)
+                    user.coins += task.reward
+                    db.userDao().update(user)
+                    HomeActivity.start(requireContext(), user2)
+                }
+                else{
+                    Toast.makeText(requireContext(), "Only parents can confirm reward", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
