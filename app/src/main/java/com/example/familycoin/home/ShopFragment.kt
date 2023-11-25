@@ -10,8 +10,18 @@ import android.widget.GridView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.familycoin.R
+import com.example.familycoin.api.Film
+import com.example.familycoin.api.MovieApiService
+import com.example.familycoin.api.getMovieApiService
+import com.example.familycoin.gridView.MovieItem
 import com.example.familycoin.gridView.ShopAdapter
 import com.example.familycoin.gridView.ShopItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,13 +42,14 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
     private lateinit var shopList: ArrayList<ShopItem>
     private lateinit var adapter:ShopAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        shopList = setDataList()
+        //shopList = setDataList()
     }
 
     private fun setDataList() : ArrayList<ShopItem>{
@@ -60,8 +71,29 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_shop, container, false)
         gridView = view.findViewById(R.id.gridView)
-        adapter = ShopAdapter(requireContext(), shopList)
-        gridView.adapter = adapter
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val result = getMovieApiService().getMovies()
+
+                // Cambia a Main para actualizar la interfaz de usuario
+                withContext(Dispatchers.Main) {
+                    // Crea la lista de MovieItem a partir de la lista de Film
+                    val movieItemList = result.map { film ->
+                        MovieItem(title = film.Title, posterUrl = film.Poster)
+                    }
+
+                    // Actualiza el adaptador con la nueva lista de películas
+                    adapter = ShopAdapter(requireContext(), movieItemList)
+                    gridView.adapter = adapter
+                }
+            } catch (e: Exception) {
+                // Maneja errores
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Error al obtener datos de la API: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
         val btnNewReward = view.findViewById<View>(R.id.btnAddReward)
 
