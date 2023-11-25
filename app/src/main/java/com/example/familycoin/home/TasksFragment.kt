@@ -98,11 +98,16 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
                 val valorString = sharedPref?.getString("username", "default")
                 val user = db.userDao().findByName(valorString.toString())
                 if(user != null){
-                    if(user.type == 1){
-                        findNavController().navigate(R.id.newTaskFragment)
+                    if(user.familyCoinId == null){
+                        Toast.makeText(requireContext(), "You are not in a family", Toast.LENGTH_SHORT).show()
                     }
                     else{
-                        Toast.makeText(requireContext(), "You are not allowed to create a task", Toast.LENGTH_SHORT).show()
+                        if(user.type == 1){
+                            findNavController().navigate(R.id.newTaskFragment)
+                        }
+                        else{
+                            Toast.makeText(requireContext(), "You are not allowed to create a task", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -71,6 +72,9 @@ class CreateFamilyFragment : Fragment() {
                         db.userDao().update(userUpdate)
                     }
                     HomeActivity.start(requireContext(), userUpdate)
+                }
+                else {
+                    Toast.makeText(requireContext(), "The family already exists", Toast.LENGTH_SHORT).show()
                 }
             }
         }
