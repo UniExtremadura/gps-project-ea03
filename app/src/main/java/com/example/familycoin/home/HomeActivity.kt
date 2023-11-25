@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val user1 = db.userDao().findByName(user.name)
             val miTextView = findViewById<TextView>(R.id.coins)
-            miTextView.text = user1.coins.toString()
+            miTextView.text = "Coins: " + user1.coins.toString()
             setUpUI(user1)
         }
         setUpListeners()

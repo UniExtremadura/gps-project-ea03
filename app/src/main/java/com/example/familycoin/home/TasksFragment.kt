@@ -92,6 +92,20 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
 
         val btnNewTask = view.findViewById<View>(R.id.addTaskButton)
 
+        lifecycleScope.launch {
+            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+            val valorString = sharedPref?.getString("username", "default")
+            val user = db.userDao().findByName(valorString.toString())
+            if(user != null){
+                    if(user.type == 1){
+                        btnNewTask.visibility = View.VISIBLE
+                    }
+                    else{
+                        btnNewTask.visibility = View.GONE
+                    }
+                }
+            }
+
         btnNewTask.setOnClickListener {
             lifecycleScope.launch {
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
@@ -102,12 +116,7 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
                         Toast.makeText(requireContext(), "You are not in a family", Toast.LENGTH_SHORT).show()
                     }
                     else{
-                        if(user.type == 1){
-                            findNavController().navigate(R.id.newTaskFragment)
-                        }
-                        else{
-                            Toast.makeText(requireContext(), "You are not allowed to create a task", Toast.LENGTH_SHORT).show()
-                        }
+                        findNavController().navigate(R.id.newTaskFragment)
                     }
                 }
 
