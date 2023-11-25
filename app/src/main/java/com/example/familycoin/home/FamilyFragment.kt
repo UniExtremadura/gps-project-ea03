@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,7 +61,7 @@ class FamilyFragment : Fragment(){
         val familyName = db.familyDao().findById(userUpdate.familyCoinId!!).familyName
         val familyCode = db.familyDao().findById(userUpdate.familyCoinId!!).familyCoinId
         familyNameTextView.text = familyName
-        var string = "Family Code: "
+        val string = "Family Code: "
         familyCodeTextView.text = (string + familyCode.toString())
 
 
@@ -73,7 +72,7 @@ class FamilyFragment : Fragment(){
             listFamilyItem.add(FamilyItem(user.name, R.drawable.baseline_person_outline_24, user.type))
         }
 
-        var navController = Navigation.findNavController(requireView())
+        val navController = Navigation.findNavController(requireView())
         adapter = FamilyAdapter(this.requireContext(),listFamilyItem, navController)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter

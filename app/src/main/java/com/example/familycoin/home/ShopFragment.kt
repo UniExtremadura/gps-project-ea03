@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
@@ -43,7 +42,7 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
     }
 
     private fun setDataList() : ArrayList<ShopItem>{
-        var arrayList: ArrayList<ShopItem> = ArrayList()
+        val arrayList: ArrayList<ShopItem> = ArrayList()
 
         arrayList.add(ShopItem("Reward 1", R.drawable.reward))
         arrayList.add(ShopItem("Reward 2", R.drawable.reward))
@@ -95,7 +94,7 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
     }
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-        var ShopItem: ShopItem = shopList.get(position)
+        val ShopItem: ShopItem = shopList.get(position)
         Toast.makeText(requireContext(), ShopItem.name, Toast.LENGTH_SHORT).show()
     }
 }

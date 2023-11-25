@@ -48,16 +48,16 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
     }
 
     private suspend fun setDataList(){
-        var arrayList: ArrayList<TaskItem> = ArrayList()
+        val arrayList: ArrayList<TaskItem> = ArrayList()
 
         val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
         val valorString = sharedPref?.getString("username", "default")
         val taskUser = db.userDao().findByName(valorString.toString())
-        if (taskUser?.familyCoinId != null) {
+        if (taskUser.familyCoinId != null) {
             val taskListUser = db.taskDao().findByFamilyCoinId(taskUser.familyCoinId!!)
 
             if (taskListUser != null && taskListUser.isNotEmpty()) {
-                var assigned = false
+                var assigned: Boolean
                 for (task in taskListUser) {
                     assigned = false
                     if(task.assignedUserName != null){
@@ -67,8 +67,8 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
                     arrayList.add(TaskItem(task.taskName, R.drawable.baseline_task_24, assigned))
                 }
                 adapter = TaskAdapter(requireContext(), arrayList)
-                gridView?.adapter = adapter
-                gridView?.onItemClickListener = this
+                gridView.adapter = adapter
+                gridView.onItemClickListener = this
             }
         }
 
@@ -139,7 +139,7 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
     }
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-        var taskItem: TaskItem = taskList.get(position)
+        val taskItem: TaskItem = taskList.get(position)
         Toast.makeText(requireContext(), taskItem.name, Toast.LENGTH_SHORT).show()
     }
 }

@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.example.familycoin.R
 import com.example.familycoin.database.Database
-import com.example.familycoin.databinding.FragmentJoinFamilyBinding
 import com.example.familycoin.databinding.FragmentNewTaskBinding
 import com.example.familycoin.model.Task
 import kotlinx.coroutines.launch
@@ -43,7 +41,7 @@ class NewTaskFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentNewTaskBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -60,11 +58,11 @@ class NewTaskFragment : Fragment() {
             lifecycleScope.launch {
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val valorString = sharedPref?.getString("username", "default")
-                val user = db?.userDao()?.findByName(valorString!!)
+                val user = db.userDao().findByName(valorString!!)
                 if (user != null) {
                     if (user.familyCoinId != null){
                         val newTask = Task(taskName = nameEditText, description = descriptionEditText, reward = rewardEditText, familyCoinId = user.familyCoinId!!, assignedUserName = null)
-                        db?.taskDao()?.insert(newTask)
+                        db.taskDao().insert(newTask)
                     }
                     HomeActivity.start(requireContext(), user)
                 }

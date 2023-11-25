@@ -11,11 +11,8 @@ import android.widget.GridView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
-import com.example.familycoin.gridView.TaskAdapter
-import com.example.familycoin.gridView.TaskItem
 import com.example.familycoin.gridView.UserTaskAdapter
 import com.example.familycoin.gridView.UserTaskItem
 import kotlinx.coroutines.launch
@@ -50,12 +47,12 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
     }
 
     private suspend fun setDataList(){
-        var arrayList: ArrayList<UserTaskItem> = ArrayList()
+        val arrayList: ArrayList<UserTaskItem> = ArrayList()
 
         val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
         val valorString = sharedPref?.getString("assignedUserName", "default")
         val taskUser = db.userDao().findByName(valorString.toString())
-        if (taskUser?.familyCoinId != null) {
+        if (taskUser.familyCoinId != null) {
             val taskListUser = db.taskDao().findByUsername(valorString!!)
 
             if (taskListUser != null && taskListUser.isNotEmpty()) {
@@ -64,8 +61,8 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
                 }
                 val navController = Navigation.findNavController(requireView())
                 adapter = UserTaskAdapter(requireContext(), arrayList, navController)
-                gridView?.adapter = adapter
-                gridView?.onItemClickListener = this
+                gridView.adapter = adapter
+                gridView.onItemClickListener = this
             }
         }
 
@@ -108,7 +105,7 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
     }
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-        var userTaskItem: UserTaskItem = taskList.get(position)
+        val userTaskItem: UserTaskItem = taskList.get(position)
         Toast.makeText(requireContext(), userTaskItem.name, Toast.LENGTH_SHORT).show()
     }
 }
