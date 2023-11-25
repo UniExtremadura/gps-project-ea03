@@ -8,12 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import com.example.familycoin.R
 import com.example.familycoin.database.Database
-import com.example.familycoin.databinding.FragmentCreateFamilyBinding
 import com.example.familycoin.databinding.FragmentJoinFamilyBinding
 import com.example.familycoin.home.HomeActivity
-import com.example.familycoin.model.Family
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,12 +53,12 @@ class JoinFamilyFragment : Fragment() {
         myButton.setOnClickListener {
             val textoEditText = editText.text.toString().toLong()
             lifecycleScope.launch {
-                val family = db?.familyDao()?.findById(textoEditText)
+                val family = db.familyDao().findById(textoEditText)
                 if (family != null) {
                     val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                     val valorString = sharedPref?.getString("username", "default")
-                    var userUpdate = db.userDao().findByName(valorString!!)
-                    userUpdate.familyCoinId = family?.familyCoinId
+                    val userUpdate = db.userDao().findByName(valorString!!)
+                    userUpdate.familyCoinId = family.familyCoinId
                     if (userUpdate != null) {
                         db.userDao().update(userUpdate)
                     }
