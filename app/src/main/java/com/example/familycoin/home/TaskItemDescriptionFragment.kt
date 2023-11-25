@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -55,20 +54,30 @@ class TaskItemDescriptionFragment : Fragment() {
         }
         val myButton = view.findViewById<TextView>(R.id.acceptTaskButton)
 
+        lifecycleScope.launch {
+            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+            val valorString = sharedPref?.getString("username", "default")
+            val user = db.userDao().findByName(valorString.toString())
+            if(user != null){
+                if(user.type == 2){
+                    myButton.visibility = View.VISIBLE
+                }
+                else{
+                    myButton.visibility = View.GONE
+                }
+            }
+        }
+
+
         myButton.setOnClickListener{
             lifecycleScope.launch {
                 val task = db.taskDao().findByName(taskName.text.toString())
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val username = sharedPref?.getString("username", "default")
                 val user = db.userDao().findByName(username!!)
-                if(user.type == 2) {
-                    task.assignedUserName = username
-                    db.taskDao().updateAssignedUser(task)
-                    HomeActivity.start(requireContext(), user)
-                }
-                else{
-                    Toast.makeText(requireContext(), "Only children can accept tasks", Toast.LENGTH_SHORT).show()
-                }
+                task.assignedUserName = username
+                db.taskDao().updateAssignedUser(task)
+                HomeActivity.start(requireContext(), user)
             }
         }
 
