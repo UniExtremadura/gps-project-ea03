@@ -2,7 +2,6 @@ package com.example.familycoin
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -81,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (!check.fail) {
             lifecycleScope.launch {
-                val user = db?.userDao()?.findByName(binding.etUsername.text.toString())
+                val user = db.userDao().findByName(binding.etUsername.text.toString())
 
                 if (user != null) {
                     val passwordCheck = CredentialCheck.passwordOk(

@@ -8,10 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.familycoin.R
-import com.example.familycoin.gridView.UserTaskItem
 
 
 class FamilyAdapter(var context: Context, private val familyList: List<FamilyItem>, private val navController: NavController) : RecyclerView.Adapter<FamilyAdapter.FamilyViewHolder>() {
@@ -19,13 +17,6 @@ class FamilyAdapter(var context: Context, private val familyList: List<FamilyIte
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FamilyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_list, parent, false)
         return FamilyViewHolder(view)
-    }
-
-    private fun getCount(): Int {
-        return familyList.size
-    }
-    private fun getItem(position: Int): Any {
-        return familyList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -40,7 +31,7 @@ class FamilyAdapter(var context: Context, private val familyList: List<FamilyIte
 
         holder.itemView.setOnClickListener {
             if(familyItem.type == 2) {
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                val sharedPref = context.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val editor = sharedPref?.edit()
                 editor?.putString("assignedUserName", familyItem.name)
                 editor?.apply()

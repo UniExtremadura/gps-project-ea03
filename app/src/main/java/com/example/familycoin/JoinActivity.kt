@@ -68,7 +68,7 @@ class JoinActivity : AppCompatActivity() {
                 notifyInvalidCredentials(check.msg)
             } else {
                 lifecycleScope.launch {
-                    var typeSwitch = 0
+                    val typeSwitch : Int
                     if (switch2.isChecked) typeSwitch = 2
                     else typeSwitch = 1
                     val user = User(
