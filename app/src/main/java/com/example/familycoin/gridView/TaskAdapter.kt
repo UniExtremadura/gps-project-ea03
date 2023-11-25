@@ -8,11 +8,8 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.familycoin.R
-import com.example.familycoin.database.Database
-import kotlinx.coroutines.launch
 
 class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : BaseAdapter() {
 
@@ -50,7 +47,7 @@ class TaskAdapter(var context:Context, var taskList: ArrayList<TaskItem>) : Base
         }
 
         view.setOnClickListener(){
-            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+            val sharedPref = context.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
             val editor = sharedPref?.edit()
             editor?.putString("taskItem", taskItem.name)
             editor?.apply()

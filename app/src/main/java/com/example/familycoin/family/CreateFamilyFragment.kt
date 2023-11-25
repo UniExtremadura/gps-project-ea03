@@ -8,12 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import com.example.familycoin.databinding.FragmentCreateFamilyBinding
 import com.example.familycoin.home.HomeActivity
 import com.example.familycoin.model.Family
-import com.example.familycoin.utils.CredentialCheck
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -59,15 +57,15 @@ class CreateFamilyFragment : Fragment() {
         myButton.setOnClickListener {
             val textoEditText = editText.text.toString()
             lifecycleScope.launch {
-                val family = db?.familyDao()?.findByName(textoEditText)
+                val family = db.familyDao().findByName(textoEditText)
                 if (family == null) {
                     val newFamily = Family(familyName = textoEditText)
                     db.familyDao().insert(newFamily)
                     val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                     val valorString = sharedPref?.getString("username", "default")
-                    var userUpdate = db.userDao().findByName(valorString!!)
-                    var newFamilyComplete = db.familyDao().findByName(textoEditText)
-                    userUpdate.familyCoinId = newFamilyComplete?.familyCoinId
+                    val userUpdate = db.userDao().findByName(valorString!!)
+                    val newFamilyComplete = db.familyDao().findByName(textoEditText)
+                    userUpdate.familyCoinId = newFamilyComplete.familyCoinId
                     if (userUpdate != null) {
                         db.userDao().update(userUpdate)
                     }

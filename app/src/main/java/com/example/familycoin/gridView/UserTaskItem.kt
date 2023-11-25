@@ -1,12 +1,4 @@
 package com.example.familycoin.gridView
 
-class UserTaskItem {
-    var name: String? = null
-    var image: Int? = null
-
-
-    constructor(name: String?, image: Int?) {
-        this.name = name
-        this.image = image
-    }
+class UserTaskItem(var name: String?, var image: Int?) {
 }
