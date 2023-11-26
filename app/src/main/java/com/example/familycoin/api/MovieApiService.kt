@@ -13,7 +13,7 @@ private val service: MovieApiService by lazy {
         .build()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("https://gist.githubusercontent.com/prodrigul/bd16cf373fdef027b9f746c9c69e752b/raw/bf59ce5436f23a1712a9b28cfb704d0711764eec/")
+        .baseUrl("https://gist.githubusercontent.com/prodrigul/bd16cf373fdef027b9f746c9c69e752b/raw/969d077a8d208f088574e03ba1cfde4b1acc1f6e/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
@@ -23,6 +23,6 @@ private val service: MovieApiService by lazy {
 
 fun getMovieApiService() = service
 interface MovieApiService {
-    @GET("https://gist.githubusercontent.com/prodrigul/bd16cf373fdef027b9f746c9c69e752b/raw/bf59ce5436f23a1712a9b28cfb704d0711764eec/Film.JSON")
+    @GET("https://gist.githubusercontent.com/prodrigul/bd16cf373fdef027b9f746c9c69e752b/raw/969d077a8d208f088574e03ba1cfde4b1acc1f6e/Film.JSON")
     suspend fun getMovies(): List<Film>
 }
