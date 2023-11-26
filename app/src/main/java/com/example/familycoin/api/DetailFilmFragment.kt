@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
+import com.example.familycoin.home.HomeActivity
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,16 +54,19 @@ class DetailFilmFragment : Fragment() {
         val year = arguments?.getString("year")
         val posterUrl = arguments?.getString("posterUrl")
         val plot = arguments?.getString("plot")
+        val cost = arguments?.getString("cost")
 
         // Configurar las vistas con los datos de la película
         val movieTitle = view.findViewById<TextView>(R.id.textTitle)
         val movieYear = view.findViewById<TextView>(R.id.textYear)
         val moviePoster = view.findViewById<ImageView>(R.id.imagePoster)
         val moviePlot = view.findViewById<TextView>(R.id.textSynopsis)
+        val movieCost = view.findViewById<TextView>(R.id.filmValue)
 
         movieTitle.text = title
         movieYear.text = year
         moviePlot.text = plot
+        movieCost.text = cost
 
         // Cargar la imagen desde la URL usando Glide
         Glide.with(this)
@@ -84,6 +89,22 @@ class DetailFilmFragment : Fragment() {
                 }
                 else{
                     myButton.visibility = View.GONE
+                }
+            }
+        }
+
+        myButton.setOnClickListener{
+            lifecycleScope.launch {
+                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                val username = sharedPref?.getString("username", "default")
+                val user = db.userDao().findByName(username!!)
+                if (user.coins >= cost!!.toInt()) {
+                    user.coins = user.coins!! - cost!!.toInt()
+                    db.userDao().update(user)
+                    HomeActivity.start(requireContext(), user)
+                }
+                else{
+                    Toast.makeText(requireContext(), "You don't have enough coins", Toast.LENGTH_SHORT).show()
                 }
             }
         }

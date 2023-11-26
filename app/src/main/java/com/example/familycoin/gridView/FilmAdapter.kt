@@ -60,6 +60,7 @@ class FilmAdapter(var context:Context, var movieList: List<MovieItem>, private v
             bundle.putString("year", movieItem.year)  // Reemplaza con el año real
             bundle.putString("posterUrl", movieItem.posterUrl)
             bundle.putString("plot", movieItem.plot)  // Reemplaza con la trama real
+            bundle.putString("cost", movieItem.cost.toString())
 
             // Navegar al fragmento de detalles
             navController.navigate(R.id.filmDetailFragment, bundle)

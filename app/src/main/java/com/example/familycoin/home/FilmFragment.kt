@@ -76,7 +76,7 @@ class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
                 withContext(Dispatchers.Main) {
                     // Crea la lista de MovieItem a partir de la lista de Film
                     val movieItemList = result.map { film ->
-                        MovieItem(title = film.Title, posterUrl = film.Poster, year = film.Year, plot = film.Plot)
+                        MovieItem(title = film.Title, posterUrl = film.Poster, year = film.Year, plot = film.Plot, cost = 100)
                     }
 
                     // Actualiza el adaptador con la nueva lista de películas
