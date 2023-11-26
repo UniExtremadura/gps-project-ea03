@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.example.familycoin.R
 import com.example.familycoin.api.getMovieApiService
 import com.example.familycoin.gridView.MovieItem
@@ -75,11 +76,12 @@ class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
                 withContext(Dispatchers.Main) {
                     // Crea la lista de MovieItem a partir de la lista de Film
                     val movieItemList = result.map { film ->
-                        MovieItem(title = film.Title, posterUrl = film.Poster)
+                        MovieItem(title = film.Title, posterUrl = film.Poster, year = film.Year, plot = film.Plot)
                     }
 
                     // Actualiza el adaptador con la nueva lista de películas
-                    adapter = FilmAdapter(requireContext(), movieItemList)
+                    val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                    adapter = FilmAdapter(requireContext(), movieItemList, navController)
                     gridView.adapter = adapter
                 }
             } catch (e: Exception) {
@@ -89,10 +91,9 @@ class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
                 }
             }
         }
-
-
         return view
     }
+
 
     companion object {
         /**

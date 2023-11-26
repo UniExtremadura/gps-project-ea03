@@ -91,4 +91,10 @@
         android:label="Reward Description"
         tools:layout="@layout/fragment_reward_item_detail" />
 
+    <fragment
+        android:id="@+id/filmDetailFragment"
+        android:name="com.example.familycoin.api.DetailFilmFragment"
+        android:label="fragment_film_detail"
+        tools:layout="@layout/fragment_detail_film" />
+
 </navigation>

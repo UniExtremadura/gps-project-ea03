@@ -1,16 +1,23 @@
 package com.example.familycoin.gridView
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.familycoin.R
+import com.example.familycoin.api.DetailFilmFragment
+import androidx.navigation.fragment.findNavController
 
-class FilmAdapter(var context:Context, var movieList: List<MovieItem>) : BaseAdapter() {
+class FilmAdapter(var context:Context, var movieList: List<MovieItem>, val navController: NavController) : BaseAdapter() {
+
+
     override fun getCount(): Int {
         return movieList.size
     }
@@ -22,6 +29,7 @@ class FilmAdapter(var context:Context, var movieList: List<MovieItem>) : BaseAda
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
+
 
     override fun getView(
         position: Int,
@@ -43,6 +51,20 @@ class FilmAdapter(var context:Context, var movieList: List<MovieItem>) : BaseAda
             .load(movieItem.posterUrl)
             .placeholder(R.drawable.ic_launcher_background)
             .into(movieImage)
+
+        // Agregar un clic del elemento
+        view.setOnClickListener {
+            // Crear un bundle para pasar datos al fragmento de detalles
+            val bundle = Bundle()
+            bundle.putString("title", movieItem.title)
+            bundle.putString("year", movieItem.year)  // Reemplaza con el año real
+            bundle.putString("posterUrl", movieItem.posterUrl)
+            bundle.putString("plot", movieItem.plot)  // Reemplaza con la trama real
+
+            // Navegar al fragmento de detalles
+            navController.navigate(R.id.filmDetailFragment, bundle)
+
+        }
 
         return view
     }

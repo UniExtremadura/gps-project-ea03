@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="100dp"
+    tools:context=".api.DetailFilmFragment">
+
+    <ImageView
+        android:id="@+id/imagePoster"
+        android:layout_width="395dp"
+        android:layout_height="293dp"
+        android:layout_marginBottom="336dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="254dp"
+        android:layout_height="45dp"
+        android:layout_below="@id/imagePoster"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagePoster" />
+
+    <TextView
+        android:id="@+id/textYear"
+        android:layout_width="106dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/textTitle"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTitle" />
+
+    <TextView
+        android:id="@+id/textSynopsis"
+        android:layout_width="368dp"
+        android:layout_height="309dp"
+        android:layout_below="@id/textYear"
+        android:layout_marginTop="24dp"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textYear" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
