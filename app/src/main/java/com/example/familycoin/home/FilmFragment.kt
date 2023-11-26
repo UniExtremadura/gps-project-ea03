@@ -1,6 +1,5 @@
 package com.example.familycoin.home
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,16 +8,15 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import com.example.familycoin.R
-import com.example.familycoin.database.Database
+import com.example.familycoin.api.getMovieApiService
+import com.example.familycoin.gridView.MovieItem
 import com.example.familycoin.gridView.FilmAdapter
-import com.example.familycoin.gridView.ShopAdapter
 import com.example.familycoin.gridView.ShopItem
-import com.example.familycoin.gridView.TaskAdapter
-import com.example.familycoin.gridView.TaskItem
-import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,15 +28,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ShopFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
+class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
     private lateinit var gridView: GridView
     private lateinit var shopList: ArrayList<ShopItem>
-    private lateinit var adapter: ShopAdapter
-    private lateinit var db: Database
+    private lateinit var adapter:FilmAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,27 +44,19 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        db = Database.getInstance(requireContext())!!
-
+        //shopList = setDataList()
     }
 
-    private suspend fun setDataList(){
+    private fun setDataList() : ArrayList<ShopItem>{
         val arrayList: ArrayList<ShopItem> = ArrayList()
 
-        val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-        val valorString = sharedPref?.getString("username", "default")
-        val shopUser = db.userDao().findByName(valorString.toString())
-        if (shopUser.familyCoinId != null) {
-            val shopListUser = db.rewardDao().findByFamilyCoinId(shopUser.familyCoinId!!)
-            if (shopListUser != null && shopListUser.isNotEmpty()) {
-                for (shop in shopListUser) {
-                    arrayList.add(ShopItem(shop.rewardName, R.drawable.baseline_task_24))
-                }
-            }
-        }
-        adapter = ShopAdapter(requireContext(), arrayList)
-        gridView.adapter = adapter
-        gridView.onItemClickListener = this
+        arrayList.add(ShopItem("Reward 1", R.drawable.reward))
+        arrayList.add(ShopItem("Reward 2", R.drawable.reward))
+        arrayList.add(ShopItem("Reward 3", R.drawable.reward))
+        arrayList.add(ShopItem("Reward 4", R.drawable.reward))
+        arrayList.add(ShopItem("Reward 5", R.drawable.reward))
+
+        return arrayList
     }
 
     override fun onCreateView(
@@ -75,17 +64,30 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_shop, container, false)
+        val view = inflater.inflate(R.layout.fragment_film, container, false)
         gridView = view.findViewById(R.id.gridView)
 
-        lifecycleScope.launch {
-            setDataList()
-        }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val result = getMovieApiService().getMovies()
 
-        val btnNewReward = view.findViewById<View>(R.id.btnAddReward)
+                // Cambia a Main para actualizar la interfaz de usuario
+                withContext(Dispatchers.Main) {
+                    // Crea la lista de MovieItem a partir de la lista de Film
+                    val movieItemList = result.map { film ->
+                        MovieItem(title = film.Title, posterUrl = film.Poster)
+                    }
 
-        btnNewReward.setOnClickListener {
-            findNavController().navigate(R.id.newRewardFragment)
+                    // Actualiza el adaptador con la nueva lista de películas
+                    adapter = FilmAdapter(requireContext(), movieItemList)
+                    gridView.adapter = adapter
+                }
+            } catch (e: Exception) {
+                // Maneja errores
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Error al obtener datos de la API: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
 

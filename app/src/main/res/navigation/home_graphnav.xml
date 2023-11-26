@@ -80,4 +80,10 @@
         android:label="Perfil"
         tools:layout="@layout/fragment_profile" />
 
+    <fragment
+        android:id="@+id/filmFragment"
+        android:name="com.example.familycoin.home.FilmFragment"
+        android:label="Peliculas"
+        tools:layout="@layout/fragment_film" />
+
 </navigation>

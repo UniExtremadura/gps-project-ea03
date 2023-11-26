@@ -38,9 +38,30 @@
         android:layout_marginBottom="56dp"
         android:ems="10"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/costRewardEditText"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionRewardEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/descriptionRewardTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionRewardEditText"
+        app:layout_constraintStart_toStartOf="@+id/descriptionRewardEditText" />
+
+    <EditText
+        android:id="@+id/descriptionRewardEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/costRewardEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -52,12 +73,11 @@
         app:layout_constraintBottom_toTopOf="@+id/costRewardEditText"
         app:layout_constraintStart_toStartOf="@+id/costRewardEditText" />
 
-
     <EditText
         android:id="@+id/costRewardEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="156dp"
+        android:layout_marginBottom="76dp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/btnAddNewReward"
