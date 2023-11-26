@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="100dp"
+    tools:context=".appbar.ProfileFragment">
+
+    <ImageView
+        android:id="@+id/personImageView"
+        android:layout_width="70dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_person_outline_24" />
+
+    <TextView
+        android:id="@+id/titleNameTextView"
+        android:layout_width="192dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="27dp"
+        android:text=""
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/personImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fullNameTextView"
+        android:layout_width="105dp"
+        android:layout_height="29dp"
+        android:text="Full Name: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.441" />
+
+    <TextView
+        android:id="@+id/emptyFullNameTextView"
+        android:layout_width="169dp"
+        android:layout_height="30dp"
+        android:text=""
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/fullNameTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.442" />
+
+    <TextView
+        android:id="@+id/emptyFamilyGroupTextView"
+        android:layout_width="169dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:text=""
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/familyGroupTextView"
+        app:layout_constraintTop_toBottomOf="@+id/emptyFullNameTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/familyGroupTextView"
+        android:layout_width="145dp"
+        android:layout_height="32dp"
+        android:text="Family Group: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.124"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fullNameTextView"
+        app:layout_constraintVertical_bias="0.034" />
+
+    <TextView
+        android:id="@+id/coinsTextView"
+        android:layout_width="79dp"
+        android:layout_height="33dp"
+        android:text="Coins: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/familyGroupTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/emptyCoinsTextView"
+        android:layout_width="133dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="208dp"
+        android:text=""
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/coinsTextView"
+        app:layout_constraintTop_toBottomOf="@+id/emptyFamilyGroupTextView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

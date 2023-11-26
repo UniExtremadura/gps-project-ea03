@@ -74,4 +74,10 @@
         android:label="fragment_user_confirm_reward_item_description"
         tools:layout="@layout/fragment_user_confirm_reward_item_description" />
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.familycoin.appbar.ProfileFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>

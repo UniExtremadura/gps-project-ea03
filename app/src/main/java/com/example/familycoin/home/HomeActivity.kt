@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -16,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.familycoin.LoginActivity
 import com.example.familycoin.R
+import com.example.familycoin.appbar.ProfileFragment
 import com.example.familycoin.database.Database
 
 import com.example.familycoin.databinding.ActivityHomeBinding
@@ -124,7 +126,7 @@ class HomeActivity : AppCompatActivity() {
             true
         }
         R.id.action_profile -> {
-            Toast.makeText(this, "Profile option", Toast.LENGTH_SHORT).show()
+            navController.navigate(R.id.profileFragment)
             true
         }
         else -> {
