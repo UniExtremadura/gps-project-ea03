@@ -62,6 +62,9 @@ class DetailFilmFragment : Fragment() {
             .placeholder(R.drawable.ic_launcher_background)
             .into(moviePoster)
 
+        //Limpiar el bundle
+        arguments?.clear()
+
         return view
     }
 

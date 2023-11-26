@@ -15,7 +15,7 @@ import com.example.familycoin.R
 import com.example.familycoin.api.DetailFilmFragment
 import androidx.navigation.fragment.findNavController
 
-class FilmAdapter(var context:Context, var movieList: List<MovieItem>, val navController: NavController) : BaseAdapter() {
+class FilmAdapter(var context:Context, var movieList: List<MovieItem>, private val navController: NavController) : BaseAdapter() {
 
 
     override fun getCount(): Int {
@@ -65,6 +65,8 @@ class FilmAdapter(var context:Context, var movieList: List<MovieItem>, val navCo
             navController.navigate(R.id.filmDetailFragment, bundle)
 
         }
+
+
 
         return view
     }
