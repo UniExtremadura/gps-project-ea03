@@ -23,7 +23,6 @@ interface RewardDao {
 
     @Insert
     suspend fun insert(reward: Reward): Long
-
     @Update
-    suspend fun updateTaskUser(reward: Reward)
+    suspend fun updateAssignedUser(reward: Reward)
 }

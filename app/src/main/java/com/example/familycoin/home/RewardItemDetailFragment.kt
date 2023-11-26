@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -70,13 +71,20 @@ class RewardItemDetailFragment : Fragment() {
 
         myButton.setOnClickListener{
             lifecycleScope.launch {
-                /*val reward = db.rewardDao().findByName(rewardName.text.toString())
+                val reward = db.rewardDao().findByName(rewardName.text.toString())
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val username = sharedPref?.getString("username", "default")
                 val user = db.userDao().findByName(username!!)
-                task.assignedUserName = username
-                db.taskDao().updateAssignedUser(task)
-                HomeActivity.start(requireContext(), user)*/
+                if (user.coins >= reward.cost) {
+                    reward.assignedUserName = username
+                    db.rewardDao().updateAssignedUser(reward)
+                    user.coins = user.coins!! - reward.cost
+                    db.userDao().update(user)
+                    HomeActivity.start(requireContext(), user)
+                }
+                else{
+                    Toast.makeText(requireContext(), "You don't have enough coins", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

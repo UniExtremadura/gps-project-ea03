@@ -99,7 +99,20 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
         }
 
         btnNewReward.setOnClickListener {
-            findNavController().navigate(R.id.newRewardFragment)
+            lifecycleScope.launch {
+                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                val valorString = sharedPref?.getString("username", "default")
+                val user = db.userDao().findByName(valorString.toString())
+                if(user != null){
+                    if(user.familyCoinId == null){
+                        Toast.makeText(requireContext(), "You are not in a family", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        findNavController().navigate(R.id.newRewardFragment)
+                    }
+                }
+
+            }
         }
 
 
