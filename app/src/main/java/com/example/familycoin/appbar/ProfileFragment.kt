@@ -55,10 +55,14 @@ class ProfileFragment : Fragment() {
             val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
             val username = sharedPref?.getString("username", "default")
             val user = db.userDao().findByName(username!!)
-            val familyName = db.familyDao().findById(user.familyCoinId!!).familyName
+            if (user.familyCoinId != null) {
+                val familyName = db.familyDao().findById(user.familyCoinId!!).familyName
+                familyGroup.text = familyName
+            }
+            else
+                familyGroup.text = "No family group"
             titleFullName.text = user.name
             fullName.text = user.name
-            familyGroup.text = familyName
             coins.text = user.coins.toString()
         }
 
