@@ -85,5 +85,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.195" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/coin"
+        app:layout_constraintBottom_toTopOf="@+id/acceptTaskButton"
+        app:layout_constraintStart_toEndOf="@+id/taskValue"
+        app:layout_constraintTop_toBottomOf="@+id/taskDescriptionText"
+        app:layout_constraintVertical_bias="0.375" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
