@@ -94,7 +94,7 @@
     <fragment
         android:id="@+id/filmDetailFragment"
         android:name="com.example.familycoin.api.DetailFilmFragment"
-        android:label="fragment_film_detail"
+        android:label="Film Details"
         tools:layout="@layout/fragment_detail_film" />
 
 </navigation>
