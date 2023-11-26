@@ -85,5 +85,10 @@
         android:name="com.example.familycoin.home.FilmFragment"
         android:label="Films List"
         tools:layout="@layout/fragment_film" />
+    <fragment
+        android:id="@+id/rewardItemDetailFragment"
+        android:name="com.example.familycoin.home.RewardItemDetailFragment"
+        android:label="fragment_reward_item_detail"
+        tools:layout="@layout/fragment_reward_item_detail" />
 
 </navigation>

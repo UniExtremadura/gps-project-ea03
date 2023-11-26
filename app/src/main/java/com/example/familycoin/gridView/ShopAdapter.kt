@@ -39,9 +39,16 @@ class ShopAdapter(var context:Context, var shopList: ArrayList<ShopItem>) : Base
         shopImage.setImageResource(shopItem.image!!)
 
         view.setOnClickListener {
+            val navController = Navigation.findNavController(view)
             if(shopItem.name == "Films") {
-                val navController = Navigation.findNavController(view)
                 navController.navigate(R.id.filmFragment)
+            }
+            else{
+                val sharedPref = context.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                val editor = sharedPref?.edit()
+                editor?.putString("rewardItem", shopItem.name)
+                editor?.apply()
+                navController.navigate(R.id.rewardItemDetailFragment)
             }
         }
 
