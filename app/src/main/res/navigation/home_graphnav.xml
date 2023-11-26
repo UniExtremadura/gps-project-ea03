@@ -8,19 +8,19 @@
     <fragment
         android:id="@+id/tasksFragment"
         android:name="com.example.familycoin.home.TasksFragment"
-        android:label="Tareas"
+        android:label="Tasks"
         tools:layout="@layout/fragment_tasks">
     </fragment>
 
     <fragment
         android:id="@+id/shopFragment"
         android:name="com.example.familycoin.home.ShopFragment"
-        android:label="Tienda"
+        android:label="Rewards"
         tools:layout="@layout/fragment_shop" />
     <fragment
         android:id="@+id/familyFragment"
         android:name="com.example.familycoin.home.FamilyFragment"
-        android:label="Familia"
+        android:label="Family"
         tools:layout="@layout/fragment_family" >
         <action
             android:id="@+id/action_familyFragment_to_userTasksFragment"
@@ -30,60 +30,60 @@
     <fragment
         android:id="@+id/noFamilyFragment"
         android:name="com.example.familycoin.home.NoFamilyFragment"
-        android:label="Familia"
+        android:label="Family"
         tools:layout="@layout/fragment_no_family" />
 
     <fragment
         android:id="@+id/joinFamilyFragment"
         android:name="com.example.familycoin.family.JoinFamilyFragment"
-        android:label="Familia"
+        android:label="Join Family"
         tools:layout="@layout/fragment_join_family" />
 
     <fragment
         android:id="@+id/createFamilyFragment"
         android:name="com.example.familycoin.family.CreateFamilyFragment"
-        android:label="Familia"
+        android:label="Create Family"
         tools:layout="@layout/fragment_create_family" />
 
     <fragment
         android:id="@+id/newTaskFragment"
         android:name="com.example.familycoin.home.NewTaskFragment"
-        android:label="Nueva Tarea"
+        android:label="New Task"
         tools:layout="@layout/fragment_new_task" />
     <fragment
         android:id="@+id/taskItemDescriptionFragment"
         android:name="com.example.familycoin.home.TaskItemDescriptionFragment"
-        android:label="fragment_task_item_description"
+        android:label="Task Description"
         tools:layout="@layout/fragment_task_item_description" >
     </fragment>
 
     <fragment
         android:id="@+id/newRewardFragment"
         android:name="com.example.familycoin.home.NewRewardFragment"
-        android:label="Nueva Recompensa"
+        android:label="New Reward"
         tools:layout="@layout/fragment_new_reward" />
 
     <fragment
         android:id="@+id/userTasksFragment"
         android:name="com.example.familycoin.home.UserTasksFragment"
-        android:label="Tareas"
+        android:label="User Tasks"
         tools:layout="@layout/fragment_user_tasks" />
     <fragment
         android:id="@+id/userConfirmRewardItemDescriptionFragment"
         android:name="com.example.familycoin.home.UserConfirmRewardItemDescriptionFragment"
-        android:label="fragment_user_confirm_reward_item_description"
+        android:label="Confirm Reward"
         tools:layout="@layout/fragment_user_confirm_reward_item_description" />
 
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.familycoin.appbar.ProfileFragment"
-        android:label="Perfil"
+        android:label="Profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/filmFragment"
         android:name="com.example.familycoin.home.FilmFragment"
-        android:label="Peliculas"
+        android:label="Films List"
         tools:layout="@layout/fragment_film" />
 
 </navigation>

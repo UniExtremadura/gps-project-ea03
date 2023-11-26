@@ -28,27 +28,31 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="54dp"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/coin" />
+
         <TextView
             android:id="@+id/coins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0 coins"
-            android:paddingLeft="200dp"
-            />
+            android:layout_gravity="end"
+            android:textSize="20dp"
+            android:text="0 " />
+
+
 
 
     </androidx.appcompat.widget.Toolbar>
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
