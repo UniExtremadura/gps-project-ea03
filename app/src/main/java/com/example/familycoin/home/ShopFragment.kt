@@ -84,6 +84,20 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
 
         val btnNewReward = view.findViewById<View>(R.id.btnAddReward)
 
+        lifecycleScope.launch {
+            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+            val valorString = sharedPref?.getString("username", "default")
+            val user = db.userDao().findByName(valorString.toString())
+            if(user != null){
+                if(user.type == 1){
+                    btnNewReward.visibility = View.VISIBLE
+                }
+                else{
+                    btnNewReward.visibility = View.GONE
+                }
+            }
+        }
+
         btnNewReward.setOnClickListener {
             findNavController().navigate(R.id.newRewardFragment)
         }
