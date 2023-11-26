@@ -12,8 +12,8 @@ interface RewardDao {
     @Query("SELECT * FROM reward WHERE rewardId LIKE :rewardId LIMIT 1")
     suspend fun findById(rewardId: Long): Reward
 
-    @Query("SELECT * FROM reward WHERE rewardId LIKE :rewardId")
-    suspend fun findByFamilyCoinId(rewardId: Long): List<Reward>
+    @Query("SELECT * FROM reward WHERE familyCoinId LIKE :familyCoinId")
+    suspend fun findByFamilyCoinId(familyCoinId: Long): List<Reward>
 
     @Query("SELECT * FROM reward WHERE assignedUserName LIKE :assignedUserName LIMIT 1")
     suspend fun findByAssignedUserName(assignedUserName: String): Reward

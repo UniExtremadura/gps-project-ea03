@@ -39,8 +39,10 @@ class ShopAdapter(var context:Context, var shopList: ArrayList<ShopItem>) : Base
         shopImage.setImageResource(shopItem.image!!)
 
         view.setOnClickListener {
-            val navController = Navigation.findNavController(view)
-            navController.navigate(R.id.filmFragment)
+            if(shopItem.name == "Films") {
+                val navController = Navigation.findNavController(view)
+                navController.navigate(R.id.filmFragment)
+            }
         }
 
         return view

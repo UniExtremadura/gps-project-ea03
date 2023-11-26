@@ -12,6 +12,7 @@ import com.example.familycoin.database.Database
 import com.example.familycoin.databinding.FragmentCreateFamilyBinding
 import com.example.familycoin.home.HomeActivity
 import com.example.familycoin.model.Family
+import com.example.familycoin.model.Reward
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -68,6 +69,10 @@ class CreateFamilyFragment : Fragment() {
                     userUpdate.familyCoinId = newFamilyComplete.familyCoinId
                     if (userUpdate != null) {
                         db.userDao().update(userUpdate)
+                        val newReward1 = Reward(rewardName = "Films", description = "List of films", cost = 100, familyCoinId = userUpdate.familyCoinId!!, assignedUserName = null)
+                        db.rewardDao().insert(newReward1)
+                        val newReward2 = Reward(rewardName = "PortAventura", description = "Go to PortAventura", cost = 50000, familyCoinId = userUpdate.familyCoinId!!, assignedUserName = null)
+                        db.rewardDao().insert(newReward2)
                     }
                     HomeActivity.start(requireContext(), userUpdate)
                 }
