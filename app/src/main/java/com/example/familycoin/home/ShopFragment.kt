@@ -61,7 +61,7 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
             val shopListUser = db.rewardDao().findByFamilyCoinId(shopUser.familyCoinId!!)
             if (shopListUser != null && shopListUser.isNotEmpty()) {
                 for (shop in shopListUser) {
-                    arrayList.add(ShopItem(shop.rewardName, R.drawable.baseline_task_24))
+                    arrayList.add(ShopItem(shop.rewardName, shop.imageUrl))
                 }
             }
         }

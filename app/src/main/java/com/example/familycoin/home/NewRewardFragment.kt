@@ -64,7 +64,7 @@ class NewRewardFragment : Fragment() {
                 val user = db.userDao().findByName(valorString!!)
                 if (user != null) {
                     if (user.familyCoinId != null){
-                        val newReward = Reward(rewardName = nameEditText, description = descriptionEditText, cost = costEditText, familyCoinId = user.familyCoinId!!, assignedUserName = null)
+                        val newReward = Reward(rewardName = nameEditText, description = descriptionEditText, cost = costEditText, familyCoinId = user.familyCoinId!!, assignedUserName = null, imageUrl = R.drawable.reward)
                         db.rewardDao().insert(newReward)
                     }
                     HomeActivity.start(requireContext(), user)

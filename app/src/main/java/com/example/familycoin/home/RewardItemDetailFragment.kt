@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
@@ -26,6 +27,7 @@ class RewardItemDetailFragment : Fragment() {
     private lateinit var rewardDescription: TextView
     private lateinit var rewardPrice: TextView
     private lateinit var rewardName: TextView
+    private lateinit var rewardImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,7 @@ class RewardItemDetailFragment : Fragment() {
         rewardDescription = view.findViewById(R.id.rewardDescriptionText)
         rewardPrice = view.findViewById(R.id.rewardValue)
         rewardName = view.findViewById(R.id.rewardName)
+        rewardImage = view.findViewById(R.id.rewardImage)
 
         lifecycleScope.launch {
             setDataList()
@@ -88,6 +91,7 @@ class RewardItemDetailFragment : Fragment() {
         this.rewardName.text = rewardDetailed.rewardName
         this.rewardDescription.text = rewardDetailed.description
         this.rewardPrice.text = rewardDetailed.cost.toString()
+        this.rewardImage.setImageResource(rewardDetailed.imageUrl!!)
 
     }
 

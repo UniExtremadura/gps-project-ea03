@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import com.example.familycoin.databinding.FragmentCreateFamilyBinding
 import com.example.familycoin.home.HomeActivity
@@ -69,9 +70,9 @@ class CreateFamilyFragment : Fragment() {
                     userUpdate.familyCoinId = newFamilyComplete.familyCoinId
                     if (userUpdate != null) {
                         db.userDao().update(userUpdate)
-                        val newReward1 = Reward(rewardName = "Films", description = "List of films", cost = 100, familyCoinId = userUpdate.familyCoinId!!, assignedUserName = null)
+                        val newReward1 = Reward(rewardName = "Films", description = "List of films", cost = 100, familyCoinId = userUpdate.familyCoinId!!, assignedUserName = null, imageUrl = R.drawable.baseline_movie_24)
                         db.rewardDao().insert(newReward1)
-                        val newReward2 = Reward(rewardName = "PortAventura", description = "Go to PortAventura", cost = 50000, familyCoinId = userUpdate.familyCoinId!!, assignedUserName = null)
+                        val newReward2 = Reward(rewardName = "PortAventura", description = "Go to PortAventura", cost = 50000, familyCoinId = userUpdate.familyCoinId!!, assignedUserName = null, imageUrl = R.drawable.portaventura)
                         db.rewardDao().insert(newReward2)
                     }
                     HomeActivity.start(requireContext(), userUpdate)

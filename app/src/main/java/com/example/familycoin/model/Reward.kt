@@ -30,5 +30,6 @@ data class Reward(
     @ColumnInfo(name = "familyCoinId", index = true)
     val familyCoinId: Long,
     val cost: Int = 0,
-    val description : String = ""
+    val description : String = "",
+    val imageUrl: Int?
 ): Serializable
