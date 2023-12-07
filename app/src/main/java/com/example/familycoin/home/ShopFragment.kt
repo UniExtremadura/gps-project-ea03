@@ -76,7 +76,7 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_shop, container, false)
-        gridView = view.findViewById(R.id.gridView)
+        gridView = view.findViewById(R.id.gridViewShop)
 
         lifecycleScope.launch {
             setDataList()

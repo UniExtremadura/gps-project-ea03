@@ -41,7 +41,7 @@ class FamilyFragment : Fragment(){
         val view = inflater.inflate(R.layout.fragment_family, container, false)
 
         recyclerView = view.findViewById(R.id.recyclerView)
-        familyNameTextView = view.findViewById(R.id.textView)
+        familyNameTextView = view.findViewById(R.id.textViewFamilyName)
         familyCodeTextView = view.findViewById(R.id.codeTextView)
         lifecycleScope.launch {
             setDataList()

@@ -57,7 +57,7 @@ class DetailFilmFragment : Fragment() {
         val cost = arguments?.getString("cost")
 
         // Configurar las vistas con los datos de la película
-        val movieTitle = view.findViewById<TextView>(R.id.textTitle)
+        val movieTitle = view.findViewById<TextView>(R.id.textTitleFilm)
         val movieYear = view.findViewById<TextView>(R.id.textYear)
         val moviePoster = view.findViewById<ImageView>(R.id.imagePoster)
         val moviePlot = view.findViewById<TextView>(R.id.textSynopsis)

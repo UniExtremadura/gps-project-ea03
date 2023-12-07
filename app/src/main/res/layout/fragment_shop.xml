@@ -7,7 +7,7 @@
     tools:context=".home.ShopFragment">
 
     <GridView
-        android:id="@+id/gridView"
+        android:id="@+id/gridViewShop"
         android:layout_width="match_parent"
         android:layout_height="610dp"
         android:layout_marginBottom="120dp"
