@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -57,23 +58,42 @@ class NewRewardFragment : Fragment() {
         myButton.setOnClickListener {
             val nameEditText = nameText.text.toString()
             val descriptionEditText = descriptionText.text.toString()
-            val costEditText = costText.text.toString().toInt()
-            lifecycleScope.launch {
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val valorString = sharedPref?.getString("username", "default")
-                val user = db.userDao().findByName(valorString!!)
-                if (user != null) {
-                    if (user.familyCoinId != null){
-                        val newReward = Reward(rewardName = nameEditText, description = descriptionEditText, cost = costEditText, familyCoinId = user.familyCoinId!!, assignedUserName = null, imageUrl = R.drawable.reward)
-                        db.rewardDao().insert(newReward)
+            val costEditText = costText.text.toString()
+            val costInt = costEditText.toIntOrNull()
+            if (costInt != null) {
+                lifecycleScope.launch {
+                    val sharedPref =
+                        context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                    val valorString = sharedPref?.getString("username", "default")
+                    val user = db.userDao().findByName(valorString!!)
+                    if (user != null) {
+                        if (user.familyCoinId != null) {
+                            val newReward = Reward(
+                                rewardName = nameEditText,
+                                description = descriptionEditText,
+                                cost = costInt!!,
+                                familyCoinId = user.familyCoinId!!,
+                                assignedUserName = null,
+                                imageUrl = R.drawable.reward
+                            )
+                            db.rewardDao().insert(newReward)
+                        }
+                        HomeActivity.start(requireContext(), user)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Cost must be a number",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    HomeActivity.start(requireContext(), user)
-                }
 
+                }
             }
         }
-        return view
+            return view
     }
+
+
 
     companion object {
         /**
