@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import com.example.familycoin.databinding.FragmentNewTaskBinding
 import com.example.familycoin.model.Task
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,6 +49,9 @@ class NewTaskFragment : Fragment() {
         val view = binding.root
 
         val myButton = binding.btnAddNewTask
+
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.visibility = View.VISIBLE
 
         val nameText = binding.nameTaskEditText
         val descriptionText = binding.descriptionTaskEditText

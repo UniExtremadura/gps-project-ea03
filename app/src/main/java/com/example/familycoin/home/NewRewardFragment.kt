@@ -14,6 +14,7 @@ import com.example.familycoin.databinding.FragmentNewRewardBinding
 import com.example.familycoin.databinding.FragmentNewTaskBinding
 import com.example.familycoin.model.Reward
 import com.example.familycoin.model.Task
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +51,9 @@ class NewRewardFragment : Fragment() {
         val view = binding.root
 
         val myButton = binding.btnAddNewReward
+
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.visibility = View.VISIBLE
 
         val nameText = binding.nameRewardEditText
         val descriptionText = binding.descriptionRewardEditText
