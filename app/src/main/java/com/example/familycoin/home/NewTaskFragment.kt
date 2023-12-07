@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.database.Database
 import com.example.familycoin.databinding.FragmentNewTaskBinding
@@ -54,19 +55,24 @@ class NewTaskFragment : Fragment() {
         myButton.setOnClickListener {
             val nameEditText = nameText.text.toString()
             val descriptionEditText = descriptionText.text.toString()
-            val rewardEditText = rewardText.text.toString().toInt()
-            lifecycleScope.launch {
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val valorString = sharedPref?.getString("username", "default")
-                val user = db.userDao().findByName(valorString!!)
-                if (user != null) {
-                    if (user.familyCoinId != null){
-                        val newTask = Task(taskName = nameEditText, description = descriptionEditText, reward = rewardEditText, familyCoinId = user.familyCoinId!!, assignedUserName = null)
-                        db.taskDao().insert(newTask)
-                    }
+            val rewardEditText = rewardText.text.toString()
+            val rewardInt = rewardEditText.toIntOrNull()
+            if(rewardInt != null){
+                lifecycleScope.launch {
+                    val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                    val valorString = sharedPref?.getString("username", "default")
+                    val user = db.userDao().findByName(valorString!!)
+                    if (user != null) {
+                        if (user.familyCoinId != null){
+                            val newTask = Task(taskName = nameEditText, description = descriptionEditText, reward = rewardInt!!, familyCoinId = user.familyCoinId!!, assignedUserName = null)
+                            db.taskDao().insert(newTask)
+                        }
                     HomeActivity.start(requireContext(), user)
+                    }
                 }
-
+            }
+            else{
+                Toast.makeText(requireContext(), "Reward must be a number", Toast.LENGTH_SHORT).show()
             }
         }
         return view
