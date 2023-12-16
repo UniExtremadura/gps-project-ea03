@@ -1,5 +1,7 @@
 package com.example.familycoin.api
+import com.example.familycoin.model.FilmModel
 import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.yield
 
 
 data class Film (
@@ -23,7 +25,31 @@ data class Film (
     @SerializedName("imdbVotes"  ) var imdbVotes  : String?           = null,
     @SerializedName("imdbID"     ) var imdbID     : String?           = null,
     @SerializedName("Type"       ) var Type       : String?           = null,
-    @SerializedName("Response"   ) var Response   : String?           = null,
-    @SerializedName("Images"     ) var Images     : ArrayList<String> = arrayListOf()
+    @SerializedName("Response"   ) var Response   : String?           = null
 
-)
+) {
+    fun toFilmModel(): FilmModel {
+        return FilmModel(
+            filmTitle = this.Title!!,
+            filmYear = this.Year!!,
+            filmRated = this.Rated!!,
+            filmReleased = this.Released!!,
+            filmRuntime = this.Runtime!!,
+            filmGenre = this.Genre!!,
+            filmDirector = this.Director!!,
+            filmWriter = this.Writer!!,
+            filmActors = this.Actors!!,
+            filmPlot = this.Plot!!,
+            filmLanguage = this.Language!!,
+            filmCountry = this.Country!!,
+            filmAwards = this.Awards!!,
+            filmPoster = this.Poster!!,
+            filmMetascore = this.Metascore!!,
+            filmImdbRating = this.imdbRating!!,
+            filmImdbVotes = this.imdbVotes!!,
+            filmImdbId = this.imdbID!!,
+            filmType = this.Type!!,
+            filmResponse = this.Response!!
+        )
+    }
+}

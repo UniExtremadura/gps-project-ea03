@@ -1,5 +1,6 @@
 package com.example.familycoin.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -24,7 +25,6 @@ interface TaskDao {
 
     @Query("SELECT * FROM task WHERE assignedUserName LIKE :assignedUserName LIMIT 1")
     suspend fun findByAssignedUserName(assignedUserName: String): Task
-
     @Delete
     suspend fun delete(task: Task)
     @Update
