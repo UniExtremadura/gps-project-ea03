@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,13 +23,14 @@ import com.example.familycoin.database.Database
 
 import com.example.familycoin.databinding.ActivityHomeBinding
 import com.example.familycoin.model.User
+import com.example.familycoin.viewModel.HomeViewModel
 import kotlinx.coroutines.launch
 
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var db: Database
+    private val viewModel: HomeViewModel by viewModels { HomeViewModel.Factory }
 
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
@@ -36,16 +38,12 @@ class HomeActivity : AppCompatActivity() {
 
     companion object {
         const val USER_INFO = "USER_INFO"
+        val user = null
         fun start(
             context: Context,
             user: User,
         ) {
-            val intent = Intent(context, HomeActivity::class.java).apply {
-                putExtra(USER_INFO, user)
-            }
-            context.startActivity(intent)
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,19 +51,16 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = Database.getInstance(applicationContext)!!
-
-        val user = intent.getSerializableExtra(USER_INFO) as User
+        viewModel.userSession = intent.getSerializableExtra(USER_INFO) as User
         lifecycleScope.launch {
-            val user1 = db.userDao().findByName(user.name)
             val miTextView = findViewById<TextView>(R.id.coinsTextView)
-            miTextView.text = user1.coins.toString()
-            setUpUI(user1)
+            miTextView.text = viewModel.getUserCoins(viewModel.userSession!!.name)
+            setUpUI()
         }
         setUpListeners()
     }
 
-    fun setUpUI(user: User) {
+    fun setUpUI() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
@@ -86,8 +81,11 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.familyFragment -> {
-                    val destinationId = if (user.familyCoinId != null) R.id.familyFragment else R.id.noFamilyFragment
-                    navController.navigate(destinationId)
+                    lifecycleScope.launch {
+                        val destinationId =
+                            if (viewModel.getUserFamilyCoinId() != null) R.id.familyFragment else R.id.noFamilyFragment
+                        navController.navigate(destinationId)
+                    }
                     true
                 }
                 else -> {

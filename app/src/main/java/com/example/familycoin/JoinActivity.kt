@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.database.Database
@@ -12,12 +13,13 @@ import com.example.familycoin.database.Database
 import com.example.familycoin.databinding.ActivityJoinBinding
 import com.example.familycoin.model.User
 import com.example.familycoin.utils.CredentialCheck
+import com.example.familycoin.viewModel.JoinViewModel
 import kotlinx.coroutines.launch
 
 class JoinActivity : AppCompatActivity() {
 
-    private lateinit var db: Database
     private lateinit var binding: ActivityJoinBinding
+    private val viewModel: JoinViewModel by viewModels { JoinViewModel.Factory  }
 
     companion object {
 
@@ -37,7 +39,6 @@ class JoinActivity : AppCompatActivity() {
         binding = ActivityJoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = Database.getInstance(applicationContext)!!
 
         //views initialization and listeners
         setUpUI()
@@ -68,30 +69,13 @@ class JoinActivity : AppCompatActivity() {
                 notifyInvalidCredentials(check.msg)
             } else {
                 lifecycleScope.launch {
-                    val typeSwitch : Int
-                    if (switch2.isChecked) typeSwitch = 2
-                    else typeSwitch = 1
-                    val user = User(
-                        etUsername.text.toString(),
-                        etPassword.text.toString(),
-                        typeSwitch,
-                        null,
-                        0
-                    )
-                    if(db.userDao().findByName(user.name) != null) {
-                        notifyInvalidCredentials("Username already exists")
-                    }
-                    else {
-                        db.userDao().insert(user)
-                        navigateBackWithResult(
-                            User(
-                                etUsername.text.toString(),
-                                etPassword.text.toString(),
-                                typeSwitch,
-                                null,
-                                0
-                            )
-                        )
+                    val typeSwitch : Int = if (switch2.isChecked) 2
+                    else 1
+                    try {
+                        val user = viewModel.register(etUsername.text.toString(), etPassword.text.toString(), typeSwitch)
+                        navigateBackWithResult(user)
+                    } catch (e: Exception) {
+                        notifyInvalidCredentials(e.message ?: "Join failed")
                     }
                 }
             }

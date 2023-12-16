@@ -22,7 +22,7 @@ interface UserDao {
     suspend fun getCoins(name: String): Int
 
     @Query("SELECT familyCoinId FROM user WHERE name LIKE :name LIMIT 1")
-    suspend fun getFamilyCoinId(name: String): Long
+    suspend fun getFamilyCoinId(name: String): Long?
 
     @Update
     suspend fun update(user: User)

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.database.Database
 
@@ -13,12 +14,13 @@ import com.example.familycoin.databinding.ActivityLoginBinding
 import com.example.familycoin.model.User
 import com.example.familycoin.utils.CredentialCheck
 import com.example.familycoin.home.HomeActivity
+import com.example.familycoin.viewModel.LoginViewModel
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var db: Database
     private lateinit var binding: ActivityLoginBinding
+    private val viewModel: LoginViewModel by viewModels { LoginViewModel.Factory }
 
     private val responseLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -48,7 +50,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = Database.getInstance(applicationContext)!!
 
         //views initialization and listeners
         setUpUI()
@@ -80,38 +81,30 @@ class LoginActivity : AppCompatActivity() {
 
         if (!check.fail) {
             lifecycleScope.launch {
-                val user = db.userDao().findByName(binding.etUsername.text.toString())
+                try {
+                    val user = viewModel.login(binding.etUsername.text.toString(), binding.etPassword.text.toString())
+                    val sharedPreferences = getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.clear()
 
-                if (user != null) {
-                    val passwordCheck = CredentialCheck.passwordOk(
-                        binding.etPassword.text.toString(),
-                        user.password
-                    )
-
-                    if (passwordCheck.fail) {
-                        notifyInvalidCredentials(passwordCheck.msg)
-                    } else {
-
-                        val sharedPreferences = getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.clear()
-
-                        editor.putString("username", user.name)
-                        editor.apply()
-
-                        navigateToHomeActivity(user, passwordCheck.msg)
-                    }
-                } else {
-                    notifyInvalidCredentials("Invalid username")
+                    editor.putString("username", user.name)
+                    editor.apply()
+                    navigateToHomeActivity(user, "Login successful")
+                } catch (e: Exception) {
+                    notifyInvalidCredentials(e.message  ?: "Login failed" )
                 }
             }
-        } else {
+        }
+         else {
             notifyInvalidCredentials(check.msg)
         }
     }
 
     private fun navigateToHomeActivity(user: User, msg: String) {
+        val intent = Intent(this, HomeActivity::class.java)
+        intent.putExtra(HomeActivity.USER_INFO, user)
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        startActivity(intent)
         HomeActivity.start(this, user)
     }
 
