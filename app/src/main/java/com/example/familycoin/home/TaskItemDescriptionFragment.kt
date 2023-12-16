@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,6 +49,9 @@ class TaskItemDescriptionFragment : Fragment() {
         taskDescription = view.findViewById(R.id.taskDescriptionText)
         taskPrice = view.findViewById(R.id.taskValue)
         taskName = view.findViewById(R.id.taskName)
+
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.visibility = View.VISIBLE
 
         lifecycleScope.launch {
             setDataList()

@@ -74,7 +74,7 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_user_tasks, container, false)
-        gridView = view.findViewById(R.id.gridView)
+        gridView = view.findViewById(R.id.gridViewUserTasks)
 
 
         lifecycleScope.launch {

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -13,6 +14,7 @@ import com.example.familycoin.databinding.FragmentNewRewardBinding
 import com.example.familycoin.databinding.FragmentNewTaskBinding
 import com.example.familycoin.model.Reward
 import com.example.familycoin.model.Task
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +52,9 @@ class NewRewardFragment : Fragment() {
 
         val myButton = binding.btnAddNewReward
 
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.visibility = View.VISIBLE
+
         val nameText = binding.nameRewardEditText
         val descriptionText = binding.descriptionRewardEditText
         val costText = binding.costRewardEditText
@@ -57,23 +62,42 @@ class NewRewardFragment : Fragment() {
         myButton.setOnClickListener {
             val nameEditText = nameText.text.toString()
             val descriptionEditText = descriptionText.text.toString()
-            val costEditText = costText.text.toString().toInt()
-            lifecycleScope.launch {
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val valorString = sharedPref?.getString("username", "default")
-                val user = db.userDao().findByName(valorString!!)
-                if (user != null) {
-                    if (user.familyCoinId != null){
-                        val newReward = Reward(rewardName = nameEditText, description = descriptionEditText, cost = costEditText, familyCoinId = user.familyCoinId!!, assignedUserName = null, imageUrl = R.drawable.reward)
-                        db.rewardDao().insert(newReward)
+            val costEditText = costText.text.toString()
+            val costInt = costEditText.toIntOrNull()
+            if (costInt != null) {
+                lifecycleScope.launch {
+                    val sharedPref =
+                        context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
+                    val valorString = sharedPref?.getString("username", "default")
+                    val user = db.userDao().findByName(valorString!!)
+                    if (user != null) {
+                        if (user.familyCoinId != null) {
+                            val newReward = Reward(
+                                rewardName = nameEditText,
+                                description = descriptionEditText,
+                                cost = costInt!!,
+                                familyCoinId = user.familyCoinId!!,
+                                assignedUserName = null,
+                                imageUrl = R.drawable.reward
+                            )
+                            db.rewardDao().insert(newReward)
+                        }
+                        HomeActivity.start(requireContext(), user)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Cost must be a number",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    HomeActivity.start(requireContext(), user)
-                }
 
+                }
             }
         }
-        return view
+            return view
     }
+
+
 
     companion object {
         /**

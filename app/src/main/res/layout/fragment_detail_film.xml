@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textTitle"
+        android:id="@+id/textTitleFilm"
         android:layout_width="219dp"
         android:layout_height="53dp"
         android:layout_below="@id/imagePoster"
@@ -35,7 +35,7 @@
         android:id="@+id/textYear"
         android:layout_width="106dp"
         android:layout_height="32dp"
-        android:layout_below="@id/textTitle"
+        android:layout_below="@id/textTitleFilm"
         android:layout_marginTop="16dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textSynopsis" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewCoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/coin"

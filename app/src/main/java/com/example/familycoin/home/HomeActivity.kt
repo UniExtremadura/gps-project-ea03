@@ -58,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
         val user = intent.getSerializableExtra(USER_INFO) as User
         lifecycleScope.launch {
             val user1 = db.userDao().findByName(user.name)
-            val miTextView = findViewById<TextView>(R.id.coins)
+            val miTextView = findViewById<TextView>(R.id.coinsTextView)
             miTextView.text = user1.coins.toString()
             setUpUI(user1)
         }

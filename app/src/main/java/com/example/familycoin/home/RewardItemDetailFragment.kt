@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,6 +54,9 @@ class RewardItemDetailFragment : Fragment() {
             setDataList()
         }
         val myButton = view.findViewById<Button>(R.id.acceptRewardButton)
+
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.visibility = View.VISIBLE
 
         lifecycleScope.launch {
             val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)

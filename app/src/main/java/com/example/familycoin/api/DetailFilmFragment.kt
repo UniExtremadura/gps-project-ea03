@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import com.example.familycoin.home.HomeActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,6 +49,9 @@ class DetailFilmFragment : Fragment() {
     ): View? {
         // Inflar el diseño del fragmento de detalles
         val view = inflater.inflate(R.layout.fragment_detail_film, container, false)
+        
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.visibility = View.VISIBLE
 
         // Obtener los datos de la película desde los argumentos
         val title = arguments?.getString("title")
@@ -57,7 +61,7 @@ class DetailFilmFragment : Fragment() {
         val cost = arguments?.getString("cost")
 
         // Configurar las vistas con los datos de la película
-        val movieTitle = view.findViewById<TextView>(R.id.textTitle)
+        val movieTitle = view.findViewById<TextView>(R.id.textTitleFilm)
         val movieYear = view.findViewById<TextView>(R.id.textYear)
         val moviePoster = view.findViewById<ImageView>(R.id.imagePoster)
         val moviePlot = view.findViewById<TextView>(R.id.textSynopsis)

@@ -22,6 +22,7 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu" />
 
@@ -42,7 +43,7 @@
             android:src="@drawable/coin" />
 
         <TextView
-            android:id="@+id/coins"
+            android:id="@+id/coinsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

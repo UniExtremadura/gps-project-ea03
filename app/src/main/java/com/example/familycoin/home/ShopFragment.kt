@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
@@ -18,6 +19,7 @@ import com.example.familycoin.gridView.ShopItem
 import com.example.familycoin.gridView.TaskAdapter
 import com.example.familycoin.gridView.TaskItem
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -75,8 +77,12 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.visibility = View.VISIBLE
+
         val view = inflater.inflate(R.layout.fragment_shop, container, false)
-        gridView = view.findViewById(R.id.gridView)
+        gridView = view.findViewById(R.id.gridViewShop)
 
         lifecycleScope.launch {
             setDataList()
@@ -116,7 +122,38 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
         }
 
 
+
+
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val gridView = view.findViewById<GridView>(R.id.gridViewShop)
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        gridView.setOnScrollListener(object : AbsListView.OnScrollListener {
+            private var lastVisibleItem = 0
+            private var lastFirstVisibleItem = 0
+
+            override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+                // No es necesario implementar nada aquí, pero se podría si necesitas cierta lógica al cambiar de estado
+            }
+
+            override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+
+                if (firstVisibleItem > lastFirstVisibleItem && bottomNavigationView.visibility == View.VISIBLE) {
+                    // Si el usuario está deslizando hacia abajo y la barra de navegación está visible, ocúltala
+                    bottomNavigationView.visibility = View.GONE
+                } else if (firstVisibleItem < lastFirstVisibleItem && bottomNavigationView.visibility != View.VISIBLE) {
+                    // Si el usuario está deslizando hacia arriba y la barra de navegación no está visible, muéstrala
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+                lastFirstVisibleItem = firstVisibleItem
+
+            }
+        })
     }
 
     companion object {
