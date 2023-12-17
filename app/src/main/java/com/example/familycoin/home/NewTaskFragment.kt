@@ -63,25 +63,20 @@ class NewTaskFragment : Fragment() {
         val rewardText = binding.rewardTaskEditText
 
         myButton.setOnClickListener {
-            val nameEditText = nameText.text.toString()
-            val descriptionEditText = descriptionText.text.toString()
-            val rewardEditText = rewardText.text.toString()
-            val rewardInt = rewardEditText.toIntOrNull()
-            if(rewardInt != null){
                 lifecycleScope.launch {
-                    if (homeViewModel.userSession != null) {
-                        if (homeViewModel.getUserFamilyCoinId()!! != null){
-
-                            viewModel.createTask(nameEditText, descriptionEditText, rewardInt!!, homeViewModel.getUserFamilyCoinId()!!,null)
-                        }
-                    HomeActivity.start(requireContext(), homeViewModel.userSession!!)
+                    try {
+                        viewModel.createTask(nameText.text.toString(),
+                            descriptionText.text.toString(),
+                            rewardText.text.toString().toIntOrNull(),
+                            homeViewModel.getUserFamilyCoinId()!!,
+                            null)
+                        HomeActivity.start(requireContext(), homeViewModel.userSession!!)
+                    }
+                    catch (e: Exception) {
+                        Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            else{
-                Toast.makeText(requireContext(), "Reward must be a number (Integer)", Toast.LENGTH_SHORT).show()
-            }
-        }
         return view
     }
 
