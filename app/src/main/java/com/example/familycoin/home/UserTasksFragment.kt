@@ -9,12 +9,17 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import com.example.familycoin.gridView.UserTaskAdapter
 import com.example.familycoin.gridView.UserTaskItem
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.TaskViewModel
+import com.example.familycoin.viewModel.UserTasksViewModel
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,7 +40,7 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
     private lateinit var gridView: GridView
     private lateinit var taskList: ArrayList<UserTaskItem>
     private lateinit var adapter: UserTaskAdapter
-    private lateinit var db: Database
+    private val viewModel: UserTasksViewModel by viewModels { UserTasksViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,28 +48,18 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        db = Database.getInstance(requireContext())!!
     }
 
     private suspend fun setDataList(){
-        val arrayList: ArrayList<UserTaskItem> = ArrayList()
 
         val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
         val valorString = sharedPref?.getString("assignedUserName", "default")
-        val taskUser = db.userDao().findByName(valorString.toString())
-        if (taskUser.familyCoinId != null) {
-            val taskListUser = db.taskDao().findByUsername(valorString!!)
 
-            if (taskListUser != null && taskListUser.isNotEmpty()) {
-                for (task in taskListUser) {
-                    arrayList.add(UserTaskItem(task.taskName, R.drawable.baseline_task_24))
-                }
-                val navController = Navigation.findNavController(requireView())
-                adapter = UserTaskAdapter(requireContext(), arrayList, navController)
-                gridView.adapter = adapter
-                gridView.onItemClickListener = this
-            }
-        }
+        val navController = Navigation.findNavController(requireView())
+        adapter = UserTaskAdapter(requireContext(), viewModel.createUserTasksList(valorString!!), navController)
+        gridView.adapter = adapter
+        gridView.onItemClickListener = this
+
 
     }
 
