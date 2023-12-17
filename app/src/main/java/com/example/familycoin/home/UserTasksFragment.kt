@@ -72,11 +72,15 @@ class UserTasksFragment : Fragment(), AdapterView.OnItemClickListener {
         gridView = view.findViewById(R.id.gridViewUserTasks)
 
 
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         lifecycleScope.launch {
             setDataList()
         }
-
-        return view
     }
 
     companion object {
