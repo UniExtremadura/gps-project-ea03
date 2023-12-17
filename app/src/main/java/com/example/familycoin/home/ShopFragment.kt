@@ -10,6 +10,8 @@ import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -19,6 +21,9 @@ import com.example.familycoin.gridView.ShopItem
 import com.example.familycoin.gridView.TaskAdapter
 import com.example.familycoin.gridView.TaskItem
 import androidx.lifecycle.lifecycleScope
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.ShopViewModel
+import com.example.familycoin.viewModel.TaskViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -41,6 +46,8 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
     private lateinit var shopList: ArrayList<ShopItem>
     private lateinit var adapter: ShopAdapter
     private lateinit var db: Database
+    private val viewModel: ShopViewModel by viewModels { ShopViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,22 +61,14 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
     }
 
     private suspend fun setDataList(){
-        val arrayList: ArrayList<ShopItem> = ArrayList()
-
-        val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-        val valorString = sharedPref?.getString("username", "default")
-        val shopUser = db.userDao().findByName(valorString.toString())
-        if (shopUser.familyCoinId != null) {
-            val shopListUser = db.rewardDao().findByFamilyCoinId(shopUser.familyCoinId!!)
-            if (shopListUser != null && shopListUser.isNotEmpty()) {
-                for (shop in shopListUser) {
-                    arrayList.add(ShopItem(shop.rewardName, shop.imageUrl))
-                }
-            }
+        try {
+            viewModel.checkFamily(homeViewModel.userSession!!)
+            adapter = ShopAdapter(requireContext(), viewModel.createRewardList(homeViewModel.userSession!!))
+            gridView.adapter = adapter
+            gridView.onItemClickListener = this
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
-        adapter = ShopAdapter(requireContext(), arrayList)
-        gridView.adapter = adapter
-        gridView.onItemClickListener = this
     }
 
     override fun onCreateView(
@@ -90,34 +89,21 @@ class ShopFragment : Fragment() , AdapterView.OnItemClickListener {
 
         val btnNewReward = view.findViewById<View>(R.id.btnAddReward)
 
-        lifecycleScope.launch {
-            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-            val valorString = sharedPref?.getString("username", "default")
-            val user = db.userDao().findByName(valorString.toString())
-            if(user != null){
-                if(user.type == 1){
-                    btnNewReward.visibility = View.VISIBLE
-                }
-                else{
-                    btnNewReward.visibility = View.GONE
-                }
-            }
+        if(homeViewModel.userSession!!.type == 1){
+            btnNewReward.visibility = View.VISIBLE
+        }
+        else{
+            btnNewReward.visibility = View.GONE
         }
 
         btnNewReward.setOnClickListener {
             lifecycleScope.launch {
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val valorString = sharedPref?.getString("username", "default")
-                val user = db.userDao().findByName(valorString.toString())
-                if(user != null){
-                    if(user.familyCoinId == null){
-                        Toast.makeText(requireContext(), "You are not in a family", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        findNavController().navigate(R.id.newRewardFragment)
-                    }
+                try {
+                    viewModel.checkFamily(homeViewModel.userSession!!)
+                    findNavController().navigate(R.id.newRewardFragment)
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
-
             }
         }
 

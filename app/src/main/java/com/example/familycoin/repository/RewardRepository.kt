@@ -2,8 +2,11 @@ package com.example.familycoin.repository
 
 import com.example.familycoin.R
 import com.example.familycoin.database.RewardDao
+import com.example.familycoin.gridView.ShopItem
+import com.example.familycoin.gridView.TaskItem
 import com.example.familycoin.model.Family
 import com.example.familycoin.model.Reward
+import com.example.familycoin.model.User
 
 class RewardRepository(private val rewardDao: RewardDao) {
 
@@ -52,6 +55,19 @@ class RewardRepository(private val rewardDao: RewardDao) {
             insertReward(newReward)
         } else {
             throw Exception("Cost must be a number (Integer)")
+        }
+    }
+
+    suspend fun createRewardList(user: User): ArrayList<ShopItem> {
+        val rewardList: ArrayList<ShopItem> = ArrayList()
+        val rewardListUser = getRewardsByFamilyCoinId(user.familyCoinId!!)
+        return if (rewardListUser != null && rewardListUser.isNotEmpty()) {
+            for (reward in rewardListUser) {
+                rewardList.add(ShopItem(reward.rewardName, R.drawable.baseline_task_24))
+            }
+            rewardList
+        } else {
+            rewardList
         }
     }
 }

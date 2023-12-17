@@ -62,7 +62,7 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
             gridView.adapter = adapter
             gridView.onItemClickListener = this
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "You are not in a family", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -97,7 +97,7 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
                     viewModel.checkFamily(homeViewModel.userSession!!)
                     findNavController().navigate(R.id.newTaskFragment)
                 } catch (e: Exception) {
-                        Toast.makeText(requireContext(), "You are not in a family", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                     }
             }
         }
