@@ -48,6 +48,12 @@ class UserRepository(private val userDao: UserDao) {
         return user
     }
 
+    suspend fun checkFamily(user: User) {
+        if (user.familyCoinId == null) {
+            throw Exception("You are not in a family")
+        }
+    }
+
     suspend fun findUserByName(name: String): User {
         return userDao.findByName(name)
     }

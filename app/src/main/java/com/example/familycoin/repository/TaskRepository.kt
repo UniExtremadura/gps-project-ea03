@@ -1,7 +1,10 @@
 package com.example.familycoin.repository
 
+import com.example.familycoin.R
 import com.example.familycoin.database.TaskDao
+import com.example.familycoin.gridView.TaskItem
 import com.example.familycoin.model.Task
+import com.example.familycoin.model.User
 
 class TaskRepository(private val taskDao: TaskDao) {
 
@@ -14,6 +17,24 @@ class TaskRepository(private val taskDao: TaskDao) {
             assignedUserName = assignedUserName,
         )
         taskDao.insert(task)
+    }
+
+    suspend fun createTaskList(user: User): ArrayList<TaskItem> {
+        val taskList: ArrayList<TaskItem> = ArrayList()
+        val taskListUser = getTasksByFamilyCoinId(user.familyCoinId!!)
+        return if (taskListUser != null && taskListUser.isNotEmpty()) {
+            var assigned: Boolean
+            for (task in taskListUser) {
+                assigned = false
+                if (task.assignedUserName != null) {
+                    assigned = true
+                }
+                taskList.add(TaskItem(task.taskName, R.drawable.baseline_task_24, assigned))
+            }
+            taskList
+        } else {
+            taskList
+        }
     }
 
     suspend fun findTaskById(taskId: Long): Task {

@@ -10,12 +10,17 @@ import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.gridView.TaskAdapter
 import com.example.familycoin.gridView.TaskItem
 import androidx.navigation.fragment.findNavController
 import com.example.familycoin.database.Database
+import com.example.familycoin.viewModel.FamilyViewModel
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.TaskViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -37,7 +42,8 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
     private lateinit var gridView: GridView
     private lateinit var taskList: ArrayList<TaskItem>
     private lateinit var adapter:TaskAdapter
-    private lateinit var db: Database
+    private val viewModel: TaskViewModel by viewModels { TaskViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,36 +51,19 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        db = Database.getInstance(requireContext())!!
 
     }
 
     private suspend fun setDataList(){
-        val arrayList: ArrayList<TaskItem> = ArrayList()
 
-        val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-        val valorString = sharedPref?.getString("username", "default")
-        val taskUser = db.userDao().findByName(valorString.toString())
-        if (taskUser.familyCoinId != null) {
-            val taskListUser = db.taskDao().findByFamilyCoinId(taskUser.familyCoinId!!)
-
-            if (taskListUser != null && taskListUser.isNotEmpty()) {
-                var assigned: Boolean
-                for (task in taskListUser) {
-                    assigned = false
-                    if(task.assignedUserName != null){
-                        assigned = true
-                    }
-
-                    arrayList.add(TaskItem(task.taskName, R.drawable.baseline_task_24, assigned))
-                }
-                adapter = TaskAdapter(requireContext(), arrayList)
-                gridView.adapter = adapter
-                gridView.onItemClickListener = this
-            }
+        try {
+            viewModel.checkFamily(homeViewModel.userSession!!)
+            adapter = TaskAdapter(requireContext(), viewModel.createTaskList(homeViewModel.userSession!!))
+            gridView.adapter = adapter
+            gridView.onItemClickListener = this
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "You are not in a family", Toast.LENGTH_SHORT).show()
         }
-
-
     }
 
     override fun onCreateView(
@@ -93,39 +82,24 @@ class TasksFragment : Fragment() , AdapterView.OnItemClickListener {
         }
 
 
-
         val btnNewTask = view.findViewById<View>(R.id.addTaskButton)
 
-        lifecycleScope.launch {
-            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-            val valorString = sharedPref?.getString("username", "default")
-            val user = db.userDao().findByName(valorString.toString())
-            if(user != null){
-                    if(user.type == 1){
-                        btnNewTask.visibility = View.VISIBLE
-                    }
-                    else{
-                        btnNewTask.visibility = View.GONE
-                    }
-                }
-            }
+        if(homeViewModel.userSession!!.type == 1){
+            btnNewTask.visibility = View.VISIBLE
+        }
+        else{
+            btnNewTask.visibility = View.GONE
+        }
 
         btnNewTask.setOnClickListener {
             lifecycleScope.launch {
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val valorString = sharedPref?.getString("username", "default")
-                val user = db.userDao().findByName(valorString.toString())
-                if(user != null){
-                    if(user.familyCoinId == null){
+                try {
+                    viewModel.checkFamily(homeViewModel.userSession!!)
+                    findNavController().navigate(R.id.newTaskFragment)
+                } catch (e: Exception) {
                         Toast.makeText(requireContext(), "You are not in a family", Toast.LENGTH_SHORT).show()
                     }
-                    else{
-                        findNavController().navigate(R.id.newTaskFragment)
-                    }
-                }
-
             }
-
         }
 
         return view
