@@ -1,14 +1,17 @@
-package com.example.familycoin.api
+package com.example.familycoin.repository
 
+import com.example.familycoin.api.MovieApiService
 import com.example.familycoin.database.FilmDao
+import com.example.familycoin.model.FilmModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class Repository private constructor(
+class RepositoryApi constructor(
     private val filmDao: FilmDao,
     private val networkService: MovieApiService
 ) {
     private var lastUpdateTimeMillis: Long = 0L
 
-    val films = filmDao.getFilms()
     suspend fun tryUpdateRecentFilmsCache() {
         if (shouldUpdateFilmsCache()) fetchRecentFilms()
     }
@@ -21,6 +24,13 @@ class Repository private constructor(
 
         }
     }
+
+    suspend fun getFilms(): List<FilmModel>{
+        return withContext(Dispatchers.IO) {
+            fetchRecentFilms()
+            filmDao.getFilms()
+        }
+    }
     private suspend fun shouldUpdateFilmsCache(): Boolean {
         val lastFetchTimeMillis = lastUpdateTimeMillis
         val timeFromLastFetch = System.currentTimeMillis() - lastFetchTimeMillis
@@ -28,13 +38,13 @@ class Repository private constructor(
     }
     companion object {
         private const val MIN_TIME_FROM_LAST_FETCH_MILLIS: Long = 30000
-        @Volatile private var INSTANCE: Repository? = null
+        @Volatile private var INSTANCE: RepositoryApi? = null
         fun getInstance(
             filmDao: FilmDao,
             movieApiService: MovieApiService
-        ): Repository {
+        ): RepositoryApi {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Repository(filmDao, movieApiService).also { INSTANCE = it }
+                INSTANCE ?: RepositoryApi(filmDao, movieApiService).also { INSTANCE = it }
             }
         }
     }

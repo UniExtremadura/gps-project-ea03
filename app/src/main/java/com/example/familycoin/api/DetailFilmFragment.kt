@@ -10,11 +10,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import com.example.familycoin.home.HomeActivity
+import com.example.familycoin.viewModel.FilmViewModel
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.NewTaskViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -22,6 +27,8 @@ import kotlinx.coroutines.launch
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+
+
 
 /**
  * A simple [Fragment] subclass.
@@ -32,7 +39,8 @@ class DetailFilmFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var db: Database
+    private val filmViewModel: FilmViewModel by viewModels { FilmViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +48,6 @@ class DetailFilmFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        db = Database.getInstance(requireContext())!!
     }
 
     override fun onCreateView(
@@ -86,7 +93,8 @@ class DetailFilmFragment : Fragment() {
         lifecycleScope.launch {
             val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
             val valorString = sharedPref?.getString("username", "default")
-            val user = db.userDao().findByName(valorString.toString())
+            val user = homeViewModel.getUserByName(valorString.toString())
+            //coger usuario
             if(user != null){
                 if(user.type == 2){
                     myButton.visibility = View.VISIBLE
@@ -101,14 +109,13 @@ class DetailFilmFragment : Fragment() {
             lifecycleScope.launch {
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val username = sharedPref?.getString("username", "default")
-                val user = db.userDao().findByName(username!!)
-                if (user.coins >= cost!!.toInt()) {
-                    user.coins = user.coins!! - cost!!.toInt()
-                    db.userDao().update(user)
+                val user = homeViewModel.getUserByName(username.toString())
+
+                try{
                     HomeActivity.start(requireContext(), user)
                 }
-                else{
-                    Toast.makeText(requireContext(), "You don't have enough coins", Toast.LENGTH_SHORT).show()
+                catch (e: Exception) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

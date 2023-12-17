@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.familycoin.api.getMovieApiService
 import com.example.familycoin.database.Database
 import com.example.familycoin.repository.FamilyRepository
+import com.example.familycoin.repository.RepositoryApi
 import com.example.familycoin.repository.RewardRepository
 import com.example.familycoin.repository.TaskRepository
 import com.example.familycoin.repository.UserRepository
@@ -15,4 +16,5 @@ class AppContainer (context: Context){
     val rewardRepository = RewardRepository(db!!.rewardDao())
     val taskRepository = TaskRepository(db!!.taskDao())
     val familyRepository = FamilyRepository(db!!.familyDao())
+    val repositoryApi = RepositoryApi(db!!.filmDao(), movieApiService)
 }

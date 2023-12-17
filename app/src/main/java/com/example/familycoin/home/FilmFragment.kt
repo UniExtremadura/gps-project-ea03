@@ -9,12 +9,18 @@ import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.familycoin.R
-import com.example.familycoin.api.getMovieApiService
+import com.example.familycoin.repository.RepositoryApi
 import com.example.familycoin.gridView.MovieItem
 import com.example.familycoin.gridView.FilmAdapter
 import com.example.familycoin.gridView.ShopItem
+import com.example.familycoin.viewModel.FilmViewModel
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.NewTaskViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +45,8 @@ class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
     private lateinit var gridView: GridView
     private lateinit var shopList: ArrayList<ShopItem>
     private lateinit var adapter:FilmAdapter
+    private val viewModel: FilmViewModel by viewModels { FilmViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,15 +81,13 @@ class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
 
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             try {
-                val result = getMovieApiService().getMovies()
-
                 // Cambia a Main para actualizar la interfaz de usuario
                 withContext(Dispatchers.Main) {
                     // Crea la lista de MovieItem a partir de la lista de Film
-                    val movieItemList = result.map { film ->
-                        MovieItem(title = film.Title, posterUrl = film.Poster, year = film.Year, plot = film.Plot, cost = 100)
+                    val movieItemList = viewModel.getFilms().map { film ->
+                        MovieItem(title = film.filmTitle, posterUrl = film.filmPoster, year = film.filmYear, plot = film.filmPlot, cost = 100)
                     }
 
                     // Actualiza el adaptador con la nueva lista de películas
@@ -110,7 +116,6 @@ class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
             private var lastFirstVisibleItem = 0
 
             override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
-                // No es necesario implementar nada aquí, pero se podría si necesitas cierta lógica al cambiar de estado
             }
 
             override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {

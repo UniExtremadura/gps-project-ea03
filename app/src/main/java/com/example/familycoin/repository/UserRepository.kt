@@ -42,6 +42,14 @@ class UserRepository(private val userDao: UserDao) {
         return user
     }
 
+    suspend fun redeemCoinsUpdateUser(user: User, cost: Int?){
+        if(user.coins >= cost!!){
+            user.coins = user.coins!! - cost!!.toInt()
+            updateUser(user)
+        }
+
+    }
+
     suspend fun updateUserFamilyCoinId(user: User, family: Family) :User {
         user.familyCoinId = family.familyCoinId
         updateUser(user)
@@ -53,8 +61,6 @@ class UserRepository(private val userDao: UserDao) {
             throw Exception("You are not in a family")
         }
     }
-
-
 
     suspend fun findUserByName(name: String): User {
         return userDao.findByName(name)

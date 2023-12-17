@@ -4,28 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.familycoin.FamilyCoinApplication
+import com.example.familycoin.repository.RepositoryApi
+import com.example.familycoin.model.FilmModel
 import com.example.familycoin.model.User
-import com.example.familycoin.repository.UserRepository
 
-class HomeViewModel (private val userRepository: UserRepository): ViewModel() {
+class FilmViewModel(private var repository: RepositoryApi) : ViewModel() {
 
-    var userSession: User? = null
-
-    suspend fun getUserCoins(user:User): String {
-        return userRepository.getCoinsByName(user.name).toString()
+    suspend fun getFilms(): List<FilmModel> {
+        return repository.getFilms()
     }
 
-    suspend fun getUserByName(name: String): User {
-        return userRepository.findUserByName(name)
-    }
-
-    suspend fun updateUser(user: User, cost: Int?){
-        userRepository.redeemCoinsUpdateUser(user, cost)
-    }
-
-    suspend fun getUserFamilyCoinId(): Long? {
-        return userRepository.getFamilyCoinIdByName(userSession!!.name)
-    }
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -36,8 +24,8 @@ class HomeViewModel (private val userRepository: UserRepository): ViewModel() {
 
                 val application =
                     checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
-                return HomeViewModel(
-                    (application as FamilyCoinApplication).appContainer.userRepository
+                return FilmViewModel(
+                    (application as FamilyCoinApplication).appContainer.repositoryApi,
                 ) as T
             }
         }
