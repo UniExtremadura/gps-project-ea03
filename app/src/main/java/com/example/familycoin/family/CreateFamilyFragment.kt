@@ -1,12 +1,15 @@
 package com.example.familycoin.family
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -14,6 +17,10 @@ import com.example.familycoin.databinding.FragmentCreateFamilyBinding
 import com.example.familycoin.home.HomeActivity
 import com.example.familycoin.model.Family
 import com.example.familycoin.model.Reward
+import com.example.familycoin.model.User
+import com.example.familycoin.viewModel.CreateFamilyViewModel
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.ProfileViewModel
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -31,7 +38,8 @@ class CreateFamilyFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentCreateFamilyBinding
-    private lateinit var db: Database
+    private val viewModel: CreateFamilyViewModel by viewModels { CreateFamilyViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +48,6 @@ class CreateFamilyFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        db = Database.getInstance(requireContext())!!
     }
 
     override fun onCreateView(
@@ -57,28 +64,14 @@ class CreateFamilyFragment : Fragment() {
         val editText = binding.editTextText
 
         myButton.setOnClickListener {
-            val textoEditText = editText.text.toString()
             lifecycleScope.launch {
-                val family = db.familyDao().findByName(textoEditText)
-                if (family == null) {
-                    val newFamily = Family(familyName = textoEditText)
-                    db.familyDao().insert(newFamily)
-                    val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                    val valorString = sharedPref?.getString("username", "default")
-                    val userUpdate = db.userDao().findByName(valorString!!)
-                    val newFamilyComplete = db.familyDao().findByName(textoEditText)
-                    userUpdate.familyCoinId = newFamilyComplete.familyCoinId
-                    if (userUpdate != null) {
-                        db.userDao().update(userUpdate)
-                        val newReward1 = Reward(rewardName = "Films", description = "List of films", cost = 100, familyCoinId = userUpdate.familyCoinId!!, assignedUserName = null, imageUrl = R.drawable.baseline_movie_24)
-                        db.rewardDao().insert(newReward1)
-                        val newReward2 = Reward(rewardName = "PortAventura", description = "Go to PortAventura", cost = 50000, familyCoinId = userUpdate.familyCoinId!!, assignedUserName = null, imageUrl = R.drawable.portaventura)
-                        db.rewardDao().insert(newReward2)
-                    }
-                    HomeActivity.start(requireContext(), userUpdate)
+                try {
+                    viewModel.createFamily(editText.text.toString())
+                    viewModel.insertInitialsRewards(editText.text.toString())
+                    HomeActivity.start(requireContext(), viewModel.updateUserFamilyCoinId(homeViewModel.userSession!!, editText.text.toString()))
                 }
-                else {
-                    Toast.makeText(requireContext(), "The family already exists", Toast.LENGTH_SHORT).show()
+                catch (e: Exception) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

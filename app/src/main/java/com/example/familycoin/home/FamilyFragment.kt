@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,15 +17,17 @@ import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import com.example.familycoin.model.User
 import com.example.familycoin.recyclerView.FamilyItem
+import com.example.familycoin.viewModel.FamilyViewModel
+import com.example.familycoin.viewModel.HomeViewModel
 import kotlinx.coroutines.launch
 
 class FamilyFragment : Fragment(){
 
-
+    private val viewModel: FamilyViewModel by viewModels { FamilyViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FamilyAdapter
-    private lateinit var db: Database
     private lateinit var familyNameTextView: TextView
     private lateinit var familyCodeTextView: TextView
 
@@ -31,7 +35,6 @@ class FamilyFragment : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        db = Database.getInstance(requireContext())!!
     }
 
     override fun onCreateView(
@@ -52,28 +55,14 @@ class FamilyFragment : Fragment(){
 
 
     private suspend fun setDataList() {
-        val listFamilyItem: ArrayList<FamilyItem> = ArrayList()
-
-        val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-        val valorString = sharedPref?.getString("username", "default")
-        val userUpdate = db.userDao().findByName(valorString!!)
-
-        val familyName = db.familyDao().findById(userUpdate.familyCoinId!!).familyName
-        val familyCode = db.familyDao().findById(userUpdate.familyCoinId!!).familyCoinId
-        familyNameTextView.text = familyName
-        val string = "Family Code: "
-        familyCodeTextView.text = (string + familyCode.toString())
 
 
+        familyNameTextView.text = viewModel.getFamilyName(homeViewModel.userSession!!)
+        familyCodeTextView.text = "Family Code: " + viewModel.getFamilyCode(homeViewModel.userSession!!)
 
-        val userList = db.userDao().findByFamilyCoinId(userUpdate.familyCoinId!!) as ArrayList<User>
-
-        for (user in userList) {
-            listFamilyItem.add(FamilyItem(user.name, R.drawable.baseline_person_outline_24, user.type))
-        }
 
         val navController = Navigation.findNavController(requireView())
-        adapter = FamilyAdapter(this.requireContext(),listFamilyItem, navController)
+        adapter = FamilyAdapter(this.requireContext(),viewModel.getListFamilyItem(homeViewModel.userSession!!), navController)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
     }

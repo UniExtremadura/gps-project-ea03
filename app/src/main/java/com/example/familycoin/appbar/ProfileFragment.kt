@@ -7,9 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
+import com.example.familycoin.viewModel.FamilyViewModel
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.ProfileViewModel
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -31,6 +36,8 @@ class ProfileFragment : Fragment() {
     private lateinit var fullName: TextView
     private lateinit var familyGroup: TextView
     private lateinit var coins: TextView
+    private val viewModel: ProfileViewModel by viewModels { ProfileViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,22 +59,11 @@ class ProfileFragment : Fragment() {
         coins = view.findViewById(R.id.emptyCoinsTextView)
 
         lifecycleScope.launch {
-            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-            val username = sharedPref?.getString("username", "default")
-            val user = db.userDao().findByName(username!!)
-            if (user.familyCoinId != null) {
-                val familyName = db.familyDao().findById(user.familyCoinId!!).familyName
-                familyGroup.text = familyName
-            }
-            else
-                familyGroup.text = "No family group"
-            titleFullName.text = user.name
-            fullName.text = user.name
-            coins.text = user.coins.toString()
+            familyGroup.text = viewModel.getFamilyGroup(homeViewModel.userSession!!)
+            titleFullName.text = homeViewModel.userSession!!.name
+            fullName.text = homeViewModel.userSession!!.name
+            coins.text = viewModel.getUserCoins(homeViewModel.userSession!!)
         }
-
-
-
 
         return view
     }

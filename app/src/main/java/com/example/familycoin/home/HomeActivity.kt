@@ -43,6 +43,10 @@ class HomeActivity : AppCompatActivity() {
             context: Context,
             user: User,
         ) {
+            val intent = Intent(context, HomeActivity::class.java).apply {
+                putExtra(USER_INFO, user)
+            }
+            context.startActivity(intent)
         }
     }
 
@@ -54,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
         viewModel.userSession = intent.getSerializableExtra(USER_INFO) as User
         lifecycleScope.launch {
             val miTextView = findViewById<TextView>(R.id.coinsTextView)
-            miTextView.text = viewModel.getUserCoins(viewModel.userSession!!.name)
+            miTextView.text = viewModel.getUserCoins(viewModel.userSession!!)
             setUpUI()
         }
         setUpListeners()

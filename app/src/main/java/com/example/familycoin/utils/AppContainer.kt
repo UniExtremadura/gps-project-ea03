@@ -14,5 +14,5 @@ class AppContainer (context: Context){
     val userRepository = UserRepository(db!!.userDao())
     val rewardRepository = RewardRepository(db!!.rewardDao())
     val taskRepository = TaskRepository(db!!.taskDao())
-    val familyDao = FamilyRepository(db!!.familyDao())
+    val familyRepository = FamilyRepository(db!!.familyDao())
 }

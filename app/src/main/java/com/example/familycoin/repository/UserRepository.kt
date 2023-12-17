@@ -1,6 +1,7 @@
 package com.example.familycoin.repository
 
 import com.example.familycoin.database.UserDao
+import com.example.familycoin.model.Family
 import com.example.familycoin.model.User
 import com.example.familycoin.utils.CredentialCheck
 
@@ -41,6 +42,12 @@ class UserRepository(private val userDao: UserDao) {
         return user
     }
 
+    suspend fun updateUserFamilyCoinId(user: User, family: Family) :User {
+        user.familyCoinId = family.familyCoinId
+        updateUser(user)
+        return user
+    }
+
     suspend fun findUserByName(name: String): User {
         return userDao.findByName(name)
     }
@@ -49,8 +56,8 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.getType(name)
     }
 
-    suspend fun getUsersByFamilyCoinId(familyCoinId: Long): List<User> {
-        return userDao.findByFamilyCoinId(familyCoinId)
+    suspend fun getUsersByFamilyCoinId(familyCoinId: Long): ArrayList<User> {
+        return userDao.findByFamilyCoinId(familyCoinId) as ArrayList<User>
     }
 
     suspend fun getCoinsByName(name: String): Int {
