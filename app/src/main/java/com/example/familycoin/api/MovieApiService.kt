@@ -26,3 +26,5 @@ interface MovieApiService {
     @GET("https://gist.githubusercontent.com/prodrigul/bd16cf373fdef027b9f746c9c69e752b/raw/2cd7c7c484af8738e51b33c8efe3fb463eaafedd/Film.JSON")
     suspend fun getMovies(): List<Film>
 }
+
+class APIError(message: String, cause: Throwable?) : Throwable(message, cause)
