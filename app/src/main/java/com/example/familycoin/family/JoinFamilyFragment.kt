@@ -51,15 +51,15 @@ class JoinFamilyFragment : Fragment() {
         binding = FragmentJoinFamilyBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val myButton = binding.btnJoinFamily
+        val buttonJoinFamily = binding.btnJoinFamily
 
-        val editText = binding.joinFamilyName
+        val editTextName = binding.joinFamilyName
 
-        myButton.setOnClickListener {
+        buttonJoinFamily.setOnClickListener {
             lifecycleScope.launch {
                 try {
-                    viewModel.joinFamily(editText.text.toString().toLong())
-                    HomeActivity.start(requireContext(), viewModel.updateUserFamilyCoinId(homeViewModel.userSession!!, editText.text.toString().toLong()))
+                    viewModel.joinFamily(editTextName.text.toString().toLong())
+                    HomeActivity.start(requireContext(), viewModel.updateUserFamilyCoinId(homeViewModel.userSession!!, editTextName.text.toString().toLong()))
                 }
                 catch (e: Exception){
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()

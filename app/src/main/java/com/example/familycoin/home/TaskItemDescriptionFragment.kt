@@ -62,17 +62,17 @@ class TaskItemDescriptionFragment : Fragment() {
         lifecycleScope.launch {
             setDataList()
         }
-        val myButton = view.findViewById<TextView>(R.id.acceptTaskButton)
+        val buttonAcceptTask = view.findViewById<TextView>(R.id.acceptTaskButton)
 
         if(homeViewModel.userSession!!.type == 2){
-            myButton.visibility = View.VISIBLE
+            buttonAcceptTask.visibility = View.VISIBLE
         }
         else{
-            myButton.visibility = View.GONE
+            buttonAcceptTask.visibility = View.GONE
         }
 
 
-        myButton.setOnClickListener{
+        buttonAcceptTask.setOnClickListener{
             lifecycleScope.launch {
                 viewModel.updateUserTasks(homeViewModel.userSession!!, taskName.text.toString())
                 HomeActivity.start(requireContext(), homeViewModel.userSession!!)

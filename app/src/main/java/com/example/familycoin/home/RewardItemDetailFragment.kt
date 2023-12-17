@@ -60,20 +60,20 @@ class RewardItemDetailFragment : Fragment() {
         lifecycleScope.launch {
             setDataList()
         }
-        val myButton = view.findViewById<Button>(R.id.acceptRewardButton)
+        val buttonAcceptRewardButton = view.findViewById<Button>(R.id.acceptRewardButton)
 
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
 
         if(homeViewModel.userSession!!.type == 2){
-            myButton.visibility = View.VISIBLE
+            buttonAcceptRewardButton.visibility = View.VISIBLE
         }
         else{
-            myButton.visibility = View.GONE
+            buttonAcceptRewardButton.visibility = View.GONE
         }
 
 
-        myButton.setOnClickListener{
+        buttonAcceptRewardButton.setOnClickListener{
             lifecycleScope.launch {
                 viewModel.updateUserRewards(homeViewModel.userSession!!, rewardName.text.toString())
                 HomeActivity.start(requireContext(), homeViewModel.userSession!!)

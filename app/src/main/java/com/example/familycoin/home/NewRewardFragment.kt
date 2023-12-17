@@ -57,7 +57,7 @@ class NewRewardFragment : Fragment() {
         binding = FragmentNewRewardBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val myButton = binding.btnAddNewReward
+        val buttonAddNewReward = binding.btnAddNewReward
 
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
@@ -66,7 +66,7 @@ class NewRewardFragment : Fragment() {
         val descriptionText = binding.descriptionRewardEditText
         val costText = binding.costRewardEditText
 
-        myButton.setOnClickListener {
+        buttonAddNewReward.setOnClickListener {
                 lifecycleScope.launch {
                     try {
                         viewModel.createReward(

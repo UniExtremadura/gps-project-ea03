@@ -53,7 +53,7 @@ class NewTaskFragment : Fragment() {
         binding = FragmentNewTaskBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val myButton = binding.btnAddNewTask
+        val buttonAddNewTask = binding.btnAddNewTask
 
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
@@ -62,7 +62,7 @@ class NewTaskFragment : Fragment() {
         val descriptionText = binding.descriptionTaskEditText
         val rewardText = binding.rewardTaskEditText
 
-        myButton.setOnClickListener {
+        buttonAddNewTask.setOnClickListener {
                 lifecycleScope.launch {
                     try {
                         viewModel.createTask(nameText.text.toString(),

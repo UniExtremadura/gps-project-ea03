@@ -59,16 +59,16 @@ class CreateFamilyFragment : Fragment() {
         val view = binding.root
 
         // Obtener referencia al botÃ³n desde el enlace
-        val myButton = binding.btnCreateFamily
+        val buttonCreateFamily = binding.btnCreateFamily
 
-        val editText = binding.editTextText
+        val editTextName = binding.editTextFamilyName
 
-        myButton.setOnClickListener {
+        buttonCreateFamily.setOnClickListener {
             lifecycleScope.launch {
                 try {
-                    viewModel.createFamily(editText.text.toString())
-                    viewModel.insertInitialsRewards(editText.text.toString())
-                    HomeActivity.start(requireContext(), viewModel.updateUserFamilyCoinId(homeViewModel.userSession!!, editText.text.toString()))
+                    viewModel.createFamily(editTextName.text.toString())
+                    viewModel.insertInitialsRewards(editTextName.text.toString())
+                    HomeActivity.start(requireContext(), viewModel.updateUserFamilyCoinId(homeViewModel.userSession!!, editTextName.text.toString()))
                 }
                 catch (e: Exception) {
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()

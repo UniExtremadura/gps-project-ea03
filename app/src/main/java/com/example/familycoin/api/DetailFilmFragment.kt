@@ -88,7 +88,7 @@ class DetailFilmFragment : Fragment() {
         //Limpiar el bundle
         arguments?.clear()
 
-        val myButton = view.findViewById<Button>(R.id.confirmFilmButton)
+        val buttonConfirmFilmButton = view.findViewById<Button>(R.id.confirmFilmButton)
 
         lifecycleScope.launch {
             val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
@@ -97,15 +97,15 @@ class DetailFilmFragment : Fragment() {
             //coger usuario
             if(user != null){
                 if(user.type == 2){
-                    myButton.visibility = View.VISIBLE
+                    buttonConfirmFilmButton.visibility = View.VISIBLE
                 }
                 else{
-                    myButton.visibility = View.GONE
+                    buttonConfirmFilmButton.visibility = View.GONE
                 }
             }
         }
 
-        myButton.setOnClickListener{
+        buttonConfirmFilmButton.setOnClickListener{
             lifecycleScope.launch {
                 val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
                 val username = sharedPref?.getString("username", "default")
