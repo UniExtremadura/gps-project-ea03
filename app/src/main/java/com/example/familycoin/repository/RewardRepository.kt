@@ -1,5 +1,6 @@
 package com.example.familycoin.repository
 
+import android.annotation.SuppressLint
 import com.example.familycoin.R
 import com.example.familycoin.database.RewardDao
 import com.example.familycoin.gridView.ShopItem
@@ -71,11 +72,13 @@ class RewardRepository(private val rewardDao: RewardDao) {
         }
     }
 
-    suspend fun updateUserRewards(user: User, rewardName: String){
+    suspend fun updateUserRewards(user: User, rewardName: String): User{
         if(user.coins >= findRewardByName(rewardName).cost){
         val reward = findRewardByName(rewardName)
         reward.assignedUserName = user.name
         updateAssignedUser(reward)
+        user.coins -= reward.cost
+            return user
         }
         else{
             throw Exception("You don't have enough coins")

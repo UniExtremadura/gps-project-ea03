@@ -7,9 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.TaskItemDescriptionViewModel
+import com.example.familycoin.viewModel.UserConfirmRewardDescriptionViewModel
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,10 +31,11 @@ class UserConfirmRewardItemDescriptionFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var db: Database
     private lateinit var taskDescription: TextView
     private lateinit var taskPrice: TextView
     private lateinit var taskName: TextView
+    private val viewModel: UserConfirmRewardDescriptionViewModel by viewModels { UserConfirmRewardDescriptionViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +43,6 @@ class UserConfirmRewardItemDescriptionFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        db = Database.getInstance(requireContext())!!
     }
 
     override fun onCreateView(
@@ -54,33 +59,18 @@ class UserConfirmRewardItemDescriptionFragment : Fragment() {
         }
         val myButton = view.findViewById<TextView>(R.id.confirmTaskRewardButton)
 
-        lifecycleScope.launch {
-            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-            val valorString = sharedPref?.getString("username", "default")
-            val user = db.userDao().findByName(valorString.toString())
-            if(user != null){ if(user.type == 1){
-                myButton.visibility = View.VISIBLE
-            }
-            else{
-                myButton.visibility = View.GONE
-            }
-            }
+        if(homeViewModel.userSession!!.type == 1){
+            myButton.visibility = View.VISIBLE
+        }
+        else{
+            myButton.visibility = View.GONE
         }
 
         myButton.setOnClickListener{
 
             lifecycleScope.launch {
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val valorString = sharedPref?.getString("username", "default")
-                val user2 = db.userDao().findByName(valorString!!)
-                    val task = db.taskDao().findByName(taskName.text.toString())
-                    val username = task.assignedUserName
-                    db.taskDao().delete(task)
-                    val user = db.userDao().findByName(username!!)
-                    user.coins += task.reward
-                    db.userDao().update(user)
-                    HomeActivity.start(requireContext(), user2)
-
+                viewModel.claimReward(taskName.text.toString())
+                HomeActivity.start(requireContext(), homeViewModel.userSession!!)
             }
         }
 
@@ -90,7 +80,7 @@ class UserConfirmRewardItemDescriptionFragment : Fragment() {
     private suspend fun setDataList() {
         val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
         val valorString = sharedPref?.getString("confirmTask", "default")
-        val taskDetailed = db.taskDao().findByName(valorString!!)
+        val taskDetailed = viewModel.getTask(valorString!!)
 
         this.taskName.text = taskDetailed.taskName
         this.taskDescription.text = taskDetailed.description

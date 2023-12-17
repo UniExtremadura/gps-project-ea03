@@ -75,8 +75,14 @@ class RewardItemDetailFragment : Fragment() {
 
         buttonAcceptRewardButton.setOnClickListener{
             lifecycleScope.launch {
-                viewModel.updateUserRewards(homeViewModel.userSession!!, rewardName.text.toString())
-                HomeActivity.start(requireContext(), homeViewModel.userSession!!)
+                try {
+                    viewModel.updateUserRewards(homeViewModel.userSession!!, rewardName.text.toString())
+                    HomeActivity.start(requireContext(), homeViewModel.userSession!!)
+                }
+                catch (e: Exception){
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
 

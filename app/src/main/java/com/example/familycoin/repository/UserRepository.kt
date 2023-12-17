@@ -62,6 +62,12 @@ class UserRepository(private val userDao: UserDao) {
         }
     }
 
+    suspend fun claimReward(username: String, cost: Int){
+        val user = findUserByName(username)
+        user.coins = user.coins + cost
+        updateUser(user)
+    }
+
     suspend fun findUserByName(name: String): User {
         return userDao.findByName(name)
     }

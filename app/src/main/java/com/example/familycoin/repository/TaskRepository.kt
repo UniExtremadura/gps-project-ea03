@@ -61,6 +61,10 @@ class TaskRepository(private val taskDao: TaskDao) {
         updateAssignedUser(task)
     }
 
+    suspend fun claimReward(taskName: String){
+        deleteTask(findTaskByName(taskName))
+    }
+
     suspend fun findTaskById(taskId: Long): Task {
         return taskDao.findById(taskId)
     }
