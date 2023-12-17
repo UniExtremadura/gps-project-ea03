@@ -9,7 +9,7 @@ import com.example.familycoin.model.User
 import com.example.familycoin.repository.TaskRepository
 import com.example.familycoin.repository.UserRepository
 
-class TaskItemDescriptionViewModel (private var taskRepository: TaskRepository, private var userRepository: UserRepository): ViewModel() {
+class TaskItemDescriptionViewModel (private var taskRepository: TaskRepository): ViewModel() {
 
     suspend fun getTask(taskName: String): Task {
         return taskRepository.findTaskByName(taskName)
@@ -29,8 +29,7 @@ class TaskItemDescriptionViewModel (private var taskRepository: TaskRepository, 
                 val application =
                     checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
                 return TaskItemDescriptionViewModel(
-                    (application as FamilyCoinApplication).appContainer.taskRepository,
-                    (application as FamilyCoinApplication).appContainer.userRepository,
+                    (application as FamilyCoinApplication).appContainer.taskRepository
                 ) as T
             }
         }
