@@ -5,6 +5,17 @@ import com.example.familycoin.model.Task
 
 class TaskRepository(private val taskDao: TaskDao) {
 
+    suspend fun createTask(nombre: String, descripcion: String, reward: Int, familyCoinId: Long, assignedUserName: String?){
+        val task = Task(
+            taskName = nombre,
+            description = descripcion,
+            reward = reward,
+            familyCoinId = familyCoinId,
+            assignedUserName = assignedUserName,
+        )
+        taskDao.insert(task)
+    }
+
     suspend fun findTaskById(taskId: Long): Task {
         return taskDao.findById(taskId)
     }
@@ -33,7 +44,5 @@ class TaskRepository(private val taskDao: TaskDao) {
         taskDao.updateAssignedUser(task)
     }
 
-    suspend fun insertTask(task: Task): Long {
-        return taskDao.insert(task)
-    }
+
 }
