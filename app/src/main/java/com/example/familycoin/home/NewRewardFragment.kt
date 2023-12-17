@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
@@ -14,6 +16,9 @@ import com.example.familycoin.databinding.FragmentNewRewardBinding
 import com.example.familycoin.databinding.FragmentNewTaskBinding
 import com.example.familycoin.model.Reward
 import com.example.familycoin.model.Task
+import com.example.familycoin.viewModel.CreateFamilyViewModel
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.NewRewardViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -33,6 +38,8 @@ class NewRewardFragment : Fragment() {
     private var param2: String? = null
     private lateinit var binding: FragmentNewRewardBinding
     private lateinit var db: Database
+    private val viewModel: NewRewardViewModel by viewModels { NewRewardViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,41 +67,23 @@ class NewRewardFragment : Fragment() {
         val costText = binding.costRewardEditText
 
         myButton.setOnClickListener {
-            val nameEditText = nameText.text.toString()
-            val descriptionEditText = descriptionText.text.toString()
-            val costEditText = costText.text.toString()
-            val costInt = costEditText.toIntOrNull()
-            if (costInt != null) {
                 lifecycleScope.launch {
-                    val sharedPref =
-                        context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                    val valorString = sharedPref?.getString("username", "default")
-                    val user = db.userDao().findByName(valorString!!)
-                    if (user != null) {
-                        if (user.familyCoinId != null) {
-                            val newReward = Reward(
-                                rewardName = nameEditText,
-                                description = descriptionEditText,
-                                cost = costInt!!,
-                                familyCoinId = user.familyCoinId!!,
-                                assignedUserName = null,
-                                imageUrl = R.drawable.reward
-                            )
-                            db.rewardDao().insert(newReward)
-                        }
-                        HomeActivity.start(requireContext(), user)
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Cost must be a number",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    try {
+                        viewModel.createReward(
+                            nameText.text.toString(),
+                            null,
+                            homeViewModel.getUserFamilyCoinId()!!,
+                            costText.text.toString().toIntOrNull(),
+                            descriptionText.text.toString()
+                        )
+                        HomeActivity.start(requireContext(), homeViewModel.userSession!!)
+                    } catch (e: Exception) {
+                        Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                     }
-
                 }
-            }
+
         }
-            return view
+        return view
     }
 
 

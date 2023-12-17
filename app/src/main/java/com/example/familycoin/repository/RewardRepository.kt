@@ -38,4 +38,20 @@ class RewardRepository(private val rewardDao: RewardDao) {
     suspend fun updateAssignedUser(reward: Reward) {
         rewardDao.updateAssignedUser(reward)
     }
+
+    suspend fun createReward(rewardName: String, assignedUserName: String?, familyCoinId: Long, cost: Int?, description: String) {
+        if (cost != null) {
+            val newReward = Reward(
+                rewardName = rewardName,
+                assignedUserName = assignedUserName,
+                familyCoinId = familyCoinId,
+                cost = cost,
+                description = description,
+                imageUrl = R.drawable.reward
+            )
+            insertReward(newReward)
+        } else {
+            throw Exception("Cost must be a number (Integer)")
+        }
+    }
 }

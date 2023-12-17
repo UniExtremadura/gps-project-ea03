@@ -68,7 +68,7 @@ class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_film, container, false)
-        gridView = view.findViewById(R.id.gridView)
+        gridView = view.findViewById(R.id.gridViewFilm)
 
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
@@ -102,7 +102,7 @@ class FilmFragment : Fragment() , AdapterView.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val gridView = view.findViewById<GridView>(R.id.gridView)
+        val gridView = view.findViewById<GridView>(R.id.gridViewFilm)
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         gridView.setOnScrollListener(object : AbsListView.OnScrollListener {

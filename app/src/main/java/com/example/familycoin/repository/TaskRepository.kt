@@ -8,15 +8,20 @@ import com.example.familycoin.model.User
 
 class TaskRepository(private val taskDao: TaskDao) {
 
-    suspend fun createTask(nombre: String, descripcion: String, reward: Int, familyCoinId: Long, assignedUserName: String?){
-        val task = Task(
-            taskName = nombre,
-            description = descripcion,
-            reward = reward,
-            familyCoinId = familyCoinId,
-            assignedUserName = assignedUserName,
-        )
-        taskDao.insert(task)
+    suspend fun createTask(name: String, description: String, reward: Int?, familyCoinId: Long, assignedUserName: String?){
+        if(reward != null) {
+            val task = Task(
+                taskName = name,
+                description = description,
+                reward = reward,
+                familyCoinId = familyCoinId,
+                assignedUserName = assignedUserName,
+            )
+            taskDao.insert(task)
+        }
+        else{
+            throw Exception("Reward must be a number (Integer)")
+        }
     }
 
     suspend fun createTaskList(user: User): ArrayList<TaskItem> {

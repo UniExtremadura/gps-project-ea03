@@ -7,7 +7,7 @@
     tools:context=".home.FilmFragment">
 
     <GridView
-        android:id="@+id/gridView"
+        android:id="@+id/gridViewFilm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="100dp"
