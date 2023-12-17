@@ -70,4 +70,15 @@ class RewardRepository(private val rewardDao: RewardDao) {
             rewardList
         }
     }
+
+    suspend fun updateUserRewards(user: User, rewardName: String){
+        if(user.coins >= findRewardByName(rewardName).cost){
+        val reward = findRewardByName(rewardName)
+        reward.assignedUserName = user.name
+        updateAssignedUser(reward)
+        }
+        else{
+            throw Exception("You don't have enough coins")
+        }
+    }
 }

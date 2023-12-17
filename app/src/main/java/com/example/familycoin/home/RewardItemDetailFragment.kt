@@ -10,9 +10,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.RewardItemDetailViewModel
+import com.example.familycoin.viewModel.TaskItemDescriptionViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -30,6 +35,8 @@ class RewardItemDetailFragment : Fragment() {
     private lateinit var rewardPrice: TextView
     private lateinit var rewardName: TextView
     private lateinit var rewardImage: ImageView
+    private val viewModel: RewardItemDetailViewModel by viewModels { RewardItemDetailViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,37 +65,18 @@ class RewardItemDetailFragment : Fragment() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
 
-        lifecycleScope.launch {
-            val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-            val valorString = sharedPref?.getString("username", "default")
-            val user = db.userDao().findByName(valorString.toString())
-            if(user != null){
-                if(user.type == 2){
-                    myButton.visibility = View.VISIBLE
-                }
-                else{
-                    myButton.visibility = View.GONE
-                }
-            }
+        if(homeViewModel.userSession!!.type == 2){
+            myButton.visibility = View.VISIBLE
+        }
+        else{
+            myButton.visibility = View.GONE
         }
 
 
         myButton.setOnClickListener{
             lifecycleScope.launch {
-                val reward = db.rewardDao().findByName(rewardName.text.toString())
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val username = sharedPref?.getString("username", "default")
-                val user = db.userDao().findByName(username!!)
-                if (user.coins >= reward.cost) {
-                    reward.assignedUserName = username
-                    db.rewardDao().updateAssignedUser(reward)
-                    user.coins = user.coins!! - reward.cost
-                    db.userDao().update(user)
-                    HomeActivity.start(requireContext(), user)
-                }
-                else{
-                    Toast.makeText(requireContext(), "You don't have enough coins", Toast.LENGTH_SHORT).show()
-                }
+                viewModel.updateUserRewards(homeViewModel.userSession!!, rewardName.text.toString())
+                HomeActivity.start(requireContext(), homeViewModel.userSession!!)
             }
         }
 
@@ -98,7 +86,7 @@ class RewardItemDetailFragment : Fragment() {
     private suspend fun setDataList() {
         val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
         val valorString = sharedPref?.getString("rewardItem", "default")
-        val rewardDetailed = db.rewardDao().findByName(valorString!!)
+        val rewardDetailed = viewModel.getReward(valorString!!)
 
         this.rewardName.text = rewardDetailed.rewardName
         this.rewardDescription.text = rewardDetailed.description
