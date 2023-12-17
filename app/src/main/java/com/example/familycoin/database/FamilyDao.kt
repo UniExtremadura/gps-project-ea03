@@ -9,7 +9,7 @@ import com.example.familycoin.model.Family
 interface FamilyDao {
 
     @Query("SELECT * FROM family WHERE familyCoinId LIKE :familyCoinId LIMIT 1")
-    suspend fun findById(familyCoinId: Long): Family
+    suspend fun findById(familyCoinId: Long): Family?
 
     @Insert
     suspend fun insert(family: Family): Long

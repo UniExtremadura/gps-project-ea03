@@ -6,6 +6,11 @@ import com.example.familycoin.model.User
 
 class FamilyRepository(private val familyDao: FamilyDao) {
 
+    suspend fun joinFamily(familyCoinId: Long){
+        if (findFamilyById(familyCoinId) == null) {
+            throw Exception("The family does not exist")
+        }
+    }
 
     suspend fun createFamily(familyName: String) {
         if(findFamilyByName(familyName) == null){
@@ -24,14 +29,14 @@ class FamilyRepository(private val familyDao: FamilyDao) {
     }
 
     suspend fun getFamilyName(familyCoinId: Long): String {
-        return findFamilyById(familyCoinId).familyName
+        return findFamilyById(familyCoinId)!!.familyName
     }
 
     suspend fun getFamilyCode(familyCoinId: Long): String {
-        return findFamilyById(familyCoinId).familyCoinId.toString()
+        return findFamilyById(familyCoinId)!!.familyCoinId.toString()
     }
 
-    suspend fun findFamilyById(familyCoinId: Long): Family {
+    suspend fun findFamilyById(familyCoinId: Long): Family? {
         return familyDao.findById(familyCoinId)
     }
 

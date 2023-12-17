@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.familycoin.database.Database
 import com.example.familycoin.databinding.FragmentJoinFamilyBinding
 import com.example.familycoin.home.HomeActivity
+import com.example.familycoin.viewModel.CreateFamilyViewModel
+import com.example.familycoin.viewModel.HomeViewModel
+import com.example.familycoin.viewModel.JoinFamilyViewModel
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,7 +33,8 @@ class JoinFamilyFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentJoinFamilyBinding
-    private lateinit var db: Database
+    private val viewModel: JoinFamilyViewModel by viewModels { JoinFamilyViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +42,6 @@ class JoinFamilyFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        db = Database.getInstance(requireContext())!!
     }
 
     override fun onCreateView(
@@ -51,21 +56,13 @@ class JoinFamilyFragment : Fragment() {
         val editText = binding.joinFamilyName
 
         myButton.setOnClickListener {
-            val textoEditText = editText.text.toString().toLong()
             lifecycleScope.launch {
-                val family = db.familyDao().findById(textoEditText)
-                if (family != null) {
-                    val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                    val valorString = sharedPref?.getString("username", "default")
-                    val userUpdate = db.userDao().findByName(valorString!!)
-                    userUpdate.familyCoinId = family.familyCoinId
-                    if (userUpdate != null) {
-                        db.userDao().update(userUpdate)
-                    }
-                    HomeActivity.start(requireContext(), userUpdate)
+                try {
+                    viewModel.joinFamily(editText.text.toString().toLong())
+                    HomeActivity.start(requireContext(), viewModel.updateUserFamilyCoinId(homeViewModel.userSession!!, editText.text.toString().toLong()))
                 }
-                else{
-                    Toast.makeText(requireContext(), "The family does not exist", Toast.LENGTH_SHORT).show()
+                catch (e: Exception){
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
