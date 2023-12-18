@@ -64,7 +64,13 @@ class RewardRepository(private val rewardDao: RewardDao) {
         val rewardListUser = getRewardsByFamilyCoinId(user.familyCoinId!!)
         return if (rewardListUser != null && rewardListUser.isNotEmpty()) {
             for (reward in rewardListUser) {
-                rewardList.add(ShopItem(reward.rewardName, R.drawable.baseline_task_24))
+                if(reward.rewardName == "Films" ){
+                    rewardList.add(ShopItem(reward.rewardName, R.drawable.baseline_movie_24))
+                }else if(reward.rewardName == "PortAventura"){
+                    rewardList.add(ShopItem(reward.rewardName, R.drawable.portaventura))
+                }else{
+                rewardList.add(ShopItem(reward.rewardName, R.drawable.reward))
+                }
             }
             rewardList
         } else {
@@ -77,7 +83,7 @@ class RewardRepository(private val rewardDao: RewardDao) {
         val reward = findRewardByName(rewardName)
         reward.assignedUserName = user.name
         updateAssignedUser(reward)
-        user.coins -= reward.cost
+            user.coins -= reward.cost
             return user
         }
         else{
