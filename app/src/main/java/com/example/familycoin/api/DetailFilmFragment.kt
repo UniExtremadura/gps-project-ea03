@@ -17,9 +17,11 @@ import com.bumptech.glide.Glide
 import com.example.familycoin.R
 import com.example.familycoin.database.Database
 import com.example.familycoin.home.HomeActivity
+import com.example.familycoin.viewModel.DetailFilmViewModel
 import com.example.familycoin.viewModel.FilmViewModel
 import com.example.familycoin.viewModel.HomeViewModel
 import com.example.familycoin.viewModel.NewTaskViewModel
+import com.example.familycoin.viewModel.ShopViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -39,8 +41,8 @@ class DetailFilmFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private val filmViewModel: FilmViewModel by viewModels { FilmViewModel.Factory }
     private val homeViewModel: HomeViewModel by activityViewModels()
+    private val viewModel: DetailFilmViewModel by viewModels { DetailFilmViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +113,9 @@ class DetailFilmFragment : Fragment() {
                 val username = sharedPref?.getString("username", "default")
                 val user = homeViewModel.getUserByName(username.toString())
 
+
                 try{
+                    viewModel.updateUserRewards(homeViewModel.userSession!!, 100)
                     HomeActivity.start(requireContext(), user)
                 }
                 catch (e: Exception) {

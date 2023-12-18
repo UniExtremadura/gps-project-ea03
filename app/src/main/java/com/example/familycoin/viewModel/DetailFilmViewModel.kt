@@ -4,27 +4,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.familycoin.FamilyCoinApplication
+import com.example.familycoin.model.Reward
+import com.example.familycoin.model.Task
 import com.example.familycoin.model.User
+import com.example.familycoin.repository.RewardRepository
+import com.example.familycoin.repository.TaskRepository
 import com.example.familycoin.repository.UserRepository
 
-class HomeViewModel (private val userRepository: UserRepository): ViewModel() {
+class DetailFilmViewModel (private var rewardRepository: RewardRepository, private var userRepository: UserRepository): ViewModel() {
 
-    var userSession: User? = null
-
-    suspend fun getUserCoins(user:User): String {
-        return userRepository.getCoinsByName(user.name).toString()
+    suspend fun getReward(rewardName: String): Reward {
+        return rewardRepository.findRewardByName(rewardName)
     }
 
-    suspend fun getUserByName(name: String): User {
-        return userRepository.findUserByName(name)
-    }
-
-    suspend fun updateUserRedeemReward(user: User, cost: Int?){
-        userRepository.redeemCoinsUpdateUser(user, cost)
-    }
-
-    suspend fun getUserFamilyCoinId(): Long? {
-        return userRepository.getFamilyCoinIdByName(userSession!!.name)
+    suspend fun updateUserRewards(user: User, cost: Int){
+        userRepository.updateUser(rewardRepository.reedemReward(user, cost))
     }
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
@@ -36,8 +30,9 @@ class HomeViewModel (private val userRepository: UserRepository): ViewModel() {
 
                 val application =
                     checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
-                return HomeViewModel(
-                    (application as FamilyCoinApplication).appContainer.userRepository
+                return DetailFilmViewModel(
+                    (application as FamilyCoinApplication).appContainer.rewardRepository,
+                    (application as FamilyCoinApplication).appContainer.userRepository,
                 ) as T
             }
         }

@@ -47,7 +47,6 @@ class UserRepository(private val userDao: UserDao) {
             user.coins = user.coins!! - cost!!.toInt()
             updateUser(user)
         }
-
     }
 
     suspend fun updateUserFamilyCoinId(user: User, family: Family) :User {
