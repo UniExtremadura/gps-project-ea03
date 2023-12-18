@@ -109,14 +109,9 @@ class DetailFilmFragment : Fragment() {
 
         buttonConfirmFilmButton.setOnClickListener{
             lifecycleScope.launch {
-                val sharedPref = context?.getSharedPreferences("CurrentUser", Context.MODE_PRIVATE)
-                val username = sharedPref?.getString("username", "default")
-                val user = homeViewModel.getUserByName(username.toString())
-
-
                 try{
                     viewModel.updateUserRewards(homeViewModel.userSession!!, 100)
-                    HomeActivity.start(requireContext(), user)
+                    HomeActivity.start(requireContext(), homeViewModel.userSession!!)
                 }
                 catch (e: Exception) {
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()

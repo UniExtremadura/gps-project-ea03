@@ -13,10 +13,6 @@ import com.example.familycoin.repository.UserRepository
 
 class DetailFilmViewModel (private var rewardRepository: RewardRepository, private var userRepository: UserRepository): ViewModel() {
 
-    suspend fun getReward(rewardName: String): Reward {
-        return rewardRepository.findRewardByName(rewardName)
-    }
-
     suspend fun updateUserRewards(user: User, cost: Int){
         userRepository.updateUser(rewardRepository.reedemReward(user, cost))
     }
